@@ -1,0 +1,151 @@
+The species used in this example is called |Plant|.
+Each |Plant| has a unique ID, a flower colour,
+an energy level, and some genetic information.
+(A complete listing of the source code discussed here is provided on 
+page \pageref{code:plant}.)
+
+\begin{code}
+data Plant = Plant
+  { 
+    plantName :: String,
+    plantFlowerColour :: FlowerColour,
+    plantEnergy :: Int,
+    plantGenome :: [Bool]
+  } deriving (Show, Generic)
+\end{code} 
+
+As with |Rock|s, the type |Plant| will be an instance of 
+the |Serialize|, |Agent| and |Record|classes.
+Our plants will stay alive until all of their energy is gone.
+
+\begin{code}
+instance Serialize Plant
+
+instance Agent Plant where
+  agentId = plantName
+  isAlive plant = plantEnergy plant > 0
+
+instance Record Plant where key = agentId
+\end{code} 
+
+We'll have a choice of flower colours.
+\begin{code}
+data FlowerColour = Red | Orange | Yellow | Violet | Blue
+  deriving (Show, Eq, Generic, Enum, Bounded)
+\end{code} 
+
+In order for |Plant| to be an instance of |Serialize|,
+any type that it uses must also be an instance.
+
+\begin{code}
+instance Serialize FlowerColour
+\end{code} 
+
+We need a way to encode the plant genes into DNA-like sequences that can
+be shuffled, or even mutated, during reproduction.
+We'll encode the genes as sequences of |Bool|s.
+We could write our own coding scheme, but
+the function |mkGrayCode| automatically generates one for us.
+A Gray code maps values to codes in a way that guarantees that the codes
+for two consecutive values will differ by only one bit. This feature
+is useful for encoding genes because the result
+of a crossover operation will be similar to the inputs. 
+This helps to
+ensure that offspring are similar to their parents, as any radical
+changes from one generation to the next are the result of mutation
+alone.
+
+\begin{code}
+colourCode :: Code FlowerColour Bool
+colourCode = mkGrayCode [Red .. Blue]
+\end{code} 
+
+To support reproduction, we need a way to build a plant from its genome.
+If a mutation occurs, the resulting sequence of |Bool|s may not
+be a valid code for a colour, in which case the call to |decodeNext|
+will return |Nothing|.
+Similarly, if a cut-and-splice operation occurs,
+the child could end up with a short sequence that has no colour gene.
+In this example, we'll use a default colour of |Red|.
+(Alternatively, we could treat the mutation as non-viable,
+and not create the offspring.
+We'll see an example of that in Section {sec:bug}.)
+All plants start life with an energy of |10|.
+        
+\begin{code}
+buildPlant :: String -> [Bool] -> Plant
+buildPlant name g = Plant name colour 10 g
+  where colour = fromMaybe Red c
+        (c, _) = decodeNext colourCode g
+\end{code} 
+
+We need a way to mate two plants and produce some offspring.
+We can do this by implementing the |Reproductive| class in 
+\path{ALife.Creatur.Genetics.Reproduction.Asexual}.
+This class requires us to implement the following:
+\begin{enumerate}
+\item A type called |Base|, which specifies the type used to encode
+genes for this species. Recall that we've used |Bool|s for this purpose.
+\item A method called |recombine| which shuffles (and maybe mutates) the
+ parent's genes to produce the offspring.
+\item A method called |build| which creates the offspring.
+We can use the |buildPlant| method that we've already created,
+but we need to wrap it in a |Maybe| to satisfy the type signature of
+|build|.
+\end {enumerate}
+
+\begin{code}
+instance Reproductive Plant where
+  type Base Plant = Bool
+  recombine a b = 
+    withProbability 0.1 randomCrossover (plantGenome a, plantGenome b) >>=
+    withProbability 0.01 randomCutAndSplice >>=
+    withProbability 0.001 mutatePairedLists >>=
+    randomOneOfPair
+  build name g = Just $ buildPlant name g
+\end{code} 
+
+The implementation for |recombine| uses the sample recombination
+program discussed on page \pageref{code:recombination}.
+Next, we write the function |run|, 
+which is invoked when it is the agent's turn to use the CPU.
+Because our plants need to interact in order to mate,
+when we write the daemon (in Section \ref{sec:daemon2}) we will use
+|runInteractingAgents| instead of |runNoninteractingAgents|.
+This requires a different type signature for |run| than we used for
+rocks.
+The type signature we need is
+
+\begin{code}
+type AgentsProgram c l d n x a = 
+  [a] → StateT (Universe c l d n x a) IO [a]
+\end{code} 
+
+The input parameter is a list of agents. 
+The first agent in the list is the agent whose turn it is to use the 
+CPU.
+The rest of the list contains agents it could interact with.
+(We only need to use the first two elements of this list.)
+Finally, the program must return a list of agents that it has modified.
+
+The function |run| ``mates'' two plants and takes away one unit of energy 
+to represent the energy cost of reproduction
+(otherwise the plants would live forever).
+
+\begin{code}
+run :: [Plant] -> StateT (SimpleUniverse Plant) IO [Plant]
+run (me:other:_) = do
+  name <- genName
+  (Just baby) <- liftIO $ evalRandIO (makeOffspring me other name)
+  writeToLog $ 
+    plantName me ++ " and " ++ plantName other ++
+      " gave birth to " ++ name ++ ", with " ++ 
+       show (plantFlowerColour baby) ++ " flowers"
+  return [other, baby]
+run x = return x -- need two agents to mate
+\end{code}
+
+The complete code listing is below.
+\label{code:plant}
+\includeSource{src/Tutorial/Example2/Plant.hs}
+

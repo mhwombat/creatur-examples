@@ -1,0 +1,48 @@
+
+The module \path{ALife.Creatur.Universe.Task} provides some tasks
+that you can use with the daemon.
+These tasks handle reading and writing agents,
+which reduces the amount of code you need to write.
+(It's also easy to write your own tasks, using those in 
+\path{ALife.Creatur.Universe.Task} as a guide.)
+The simplest task has the type signature:
+
+\begin{code}
+runNoninteractingAgents ∷ (Clock c, Logger l, Database d, Agent a, 
+    Serialize a, Record a, a ~ DBRecord d) ⇒
+  AgentProgram c l d n x a → StateT (Universe c l d n x a) IO ()
+\end{code}
+
+That signature looks complex, but essentially it means that if you
+supply an |AgentProgram|, it will run it for you.
+Your |AgentProgram| will run in a universe that implements
+\path{ALife.Creatur.AgentNamer},
+\path{ALife.Creatur.Clock}, and
+\path{ALife.Creatur.Logger}.
+So what type signature must your |AgentProgram| have?
+Here's the definition.
+
+\begin{code}
+type AgentProgram c l d n x a = a → StateT (Universe c l d n x a) IO a
+\end{code}
+
+This is the signature for an agent that doesn't interact with other
+agents.
+The input parameter is the agent whose turn it is to use the CPU.
+The program must return the agent (which may have been modified).
+The universe will then automatically be updated with these changes.
+We will use the |run| function in \path{Tutorial.Example1.Rock}
+(discussed in Section \ref{sec:species1}) as our |AgentProgram|.
+Its type signature is shown below.
+
+\begin{code}
+run :: Rock -> StateT (SimpleUniverse a) IO Rock
+\end{code}
+
+|SimpleUniverse a| provides the logging, clock, and agent naming
+functionality we need, and satisfies |Universe c l d n x a|.
+So the type signature of |run| is consistent with |AgentProgram|.
+The program below configures and launches the daemon.
+
+\includeSource{src/Tutorial/Example1/Daemon.hs}
+
