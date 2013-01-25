@@ -40,7 +40,7 @@
 
 \tableofcontents
 
-\section{Overview of Créatúr}
+\chapter{Overview of Créatúr}
 
 Créatúr\footnote{\emph{Créatúr} (pronounced kray-toor) is an irish word 
 meaning animal, creature, or unfortunate person.} 
@@ -56,7 +56,7 @@ ALife species.
 Even if you aren't using the Créatúr framework, you may find some of these
 modules useful.
 
-\section{The main daemon loop}
+\chapter{The main daemon loop}
 \label{sec:daemon}
 
 The daemon clock is a simple counter used to schedule events.
@@ -77,7 +77,7 @@ For example, if agents were always processed in the same order,
 agents near the end of the list might find that that the desirable mating
 partners are already taken.
 
-\section{Overview of the process}
+\chapter{Overview of the process}
 
 The steps for using Créatúr to create and run an ALife experiment
 are listed below.
@@ -92,19 +92,19 @@ are listed below.
 All examples discussed in this tutorial are available from
 \url{https://github.com/mhwombat/creatur/archive/master.zip}.
 
-\section{Example 1: A very simple species}
+\chapter{Example 1: A very simple species}
 \label{sec:rock}
 
 In this part of the tutorial, we create and run a universe
 with a very simple species.
 This will introduce you to the basics of the Créatúr framework.
 
-\subsection{Create a species}
+\section{Create a species}
 \label{sec:species1}
 
 \input{src/Tutorial/Example1/Rock.tex}
 
-\subsection{Generate an initial population}
+\section{Generate an initial population}
 \label{sec:pop1}
 
 \input{src/Tutorial/Example1/GeneratePopulation.tex}
@@ -112,12 +112,12 @@ This will introduce you to the basics of the Créatúr framework.
 The procedure for running this program will be described in Section 
 \ref{sec:run1}.
 
-\subsection{Configure a daemon}
+\section{Configure a daemon}
 \label{sec:daemon1}
 
 \input{src/Tutorial/Example1/Daemon.tex}
 
-\subsection{Build and run the example}
+\section{Build and run the example}
 \label{sec:run1}
 
 
@@ -173,7 +173,7 @@ This demonstrates the randomisation discussed in section \ref{sec:daemon}.
 130121121234+0000       4       Roxie's counter is 103
 \end{verbatim}
 
-\section{Recombination}
+\chapter{Recombination}
 \label{sec:recombination}
 
 When agents that reproduce, the offspring will inherit a mixture of
@@ -283,28 +283,28 @@ Other recombination operators are also available.
 Consult the documentation of \path{ALife.Creatur.Genetics.Recombination}
 for more information.
 
-\section{Example 2: Asexual reproduction}
+\chapter{Example 2: Asexual reproduction}
 \label{sec:plant}
 
 In this part of the tutorial, we create a species with the
 ability to reproduce asexually.
 
-\subsection{Create a species}
+\section{Create a species}
 \label{sec:species2}
 
 \input{src/Tutorial/Example2/Plant.tex}
 
-\subsection{Generate an initial population}
+\section{Generate an initial population}
 \label{sec:pop2}
 
 \input{src/Tutorial/Example2/GeneratePopulation.tex}
 
-\subsection{Configure a daemon}
+\section{Configure a daemon}
 \label{sec:daemon2}
 
 \input{src/Tutorial/Example2/Daemon.tex}
 
-\subsection{Build and run the example}
+\section{Build and run the example}
 \label{sec:run2}
 
 \begin{enumerate}
@@ -350,28 +350,28 @@ Starting
 2       Vi and Example2_5 gave birth to Example2_18, with Violet flowers
 \end{verbatim}
 
-\section{Example 3: Sexual reproduction}
+\chapter{Example 3: Sexual reproduction}
 \label{sec:bug}
 
 In this part of the tutorial, we create a species with the
 ability to reproduce sexually.
 
-\subsection{Create a species}
+\section{Create a species}
 \label{sec:species3}
 
 \input{src/Tutorial/Example3/Bug.tex}
 
-\subsection{Generate an initial population}
+\section{Generate an initial population}
 \label{sec:pop3}
 
 \input{src/Tutorial/Example3/GeneratePopulation.tex}
 
-\subsection{Configure a daemon}
+\section{Configure a daemon}
 \label{sec:daemon3}
 
 \input{src/Tutorial/Example3/Daemon.tex}
 
-\subsection{Build and run the example}
+\section{Build and run the example}
 \label{sec:run3}
 
 \begin{enumerate}
@@ -430,30 +430,30 @@ A sample extract from the log file is shown below.
 130121134120+0000       2       Bugsy is going back to sleep. Energy=7
 \end{verbatim}
 
-\section{Example 4: Working with multiple species}
+\chapter{Example 4: Working with multiple species}
 \label{sec:multiple}
 
 In this part of the tutorial, we a universe with multiple species,
 where each species is a different Haskell type.
 
-\subsection{Create a species}
+\section{Create a species}
 \label{sec:species4}
 
 \input{src/Tutorial/Example4/Rock.tex}
 \input{src/Tutorial/Example4/Plant.tex}
 \input{src/Tutorial/Example4/Bug.tex}
 
-\subsection{Generate an initial population}
+\section{Generate an initial population}
 \label{sec:pop4}
 
 \input{src/Tutorial/Example4/GeneratePopulation.tex}
 
-\subsection{Configure a daemon}
+\section{Configure a daemon}
 \label{sec:daemon4}
 
 \input{src/Tutorial/Example4/Daemon.tex}
 
-\subsection{Build and run the example}
+\section{Build and run the example}
 \label{sec:run4}
 
 \begin{enumerate}
@@ -471,7 +471,7 @@ where each species is a different Haskell type.
 
 Log messages are sent to |example4/log/Example4.log|.
 
-\section{TO DO}
+\chapter{TO DO}
 \begin{enumerate}
 \item Explain that if you don't want the child to be immediately mature,
 you could have it be a field in the mother's implementation.
