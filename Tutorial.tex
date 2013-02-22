@@ -5,6 +5,7 @@
 \usepackage{enumerate}
 \usepackage[top=1.5cm, bottom=1.5cm, left=1.5cm, right=1.5cm]{geometry}
 \usepackage{url}
+\usepackage{hyperref}
 
 \usepackage{minted}
 \definecolor{frame_color}{gray}{0.70}
@@ -56,6 +57,64 @@ ALife species.
 Even if you aren't using the Créatúr framework, you may find some of these
 modules useful.
 
+\chapter{Getting started}
+\label{sec:install}
+
+The instructions below should work on Linux, Windows, or OSX.
+
+\begin{enumerate}
+\item Make sure you've installed the Haskell platform. You can get it from
+\url{http://hackage.haskell.org/platform/}.
+
+\item At the command prompt, type |cabal install creatur|.
+This will install the Créatúr framework.
+
+\item Download |creatur-examples-master.zip| from
+\url{https://github.com/mhwombat/creatur-examples/archive/master.zip}.
+This contains the examples used in this tutorial.
+
+\item Unzip the file you just downloaded (|creatur-examples-master.zip|).
+This will create a directory called \path{creatur-examples-master}.
+
+\item At the command prompt, go to the directory you just created.
+(|cd creatur-examples-master|).
+
+\item Build and install the examples by typing |cabal install|.
+\end {enumerate}
+
+If you've never used Haskell before, I recommend the following
+books.
+The complete content of both books is freely available online,
+so try both and see which one best suits your learning style.
+As suggested by the title, \emph{Real World Haskell} teaches
+Haskell using a series of practical examples.
+\emph{Learn You a Haskell} is presented with a great deal of humour,
+and may give you a deeper understanding of functional programming
+concepts.
+
+\begin{itemize}
+\item Learn You a Haskell for Great Good!: A Beginner's Guide \\
+Miran Lipovaca \\
+ISBN-13: 978-1593272838 \\
+\url{http://learnyouahaskell.com/}
+
+\item Real World Haskell \\
+Bryan O'Sullivan, Don Stewart, and John Goerzen \\
+ISBN-13: 978-0596514983 \\
+\url{http://book.realworldhaskell.org/}
+\end {enumerate}
+
+
+The Haskell community is very friendly and welcoming to newbies.
+Two good places to ask questions are 
+the beginners@haskell.org mailing list
+(see \url{http://www.haskell.org/haskellwiki/Mailing_lists} 
+for more information)
+and Stack Overflow \url{http://stackoverflow.com/questions/tagged/haskell}.
+
+The API documentation for Créatúr is available at 
+\url{http://hackage.haskell.org/package/creatur}.
+
 \chapter{The main daemon loop}
 \label{sec:daemon}
 
@@ -88,9 +147,6 @@ are listed below.
 \item Configure a daemon
 \item Build and run the universe
 \end {enumerate}
-
-All examples discussed in this tutorial are available from
-\url{https://github.com/mhwombat/creatur/archive/master.zip}.
 
 \chapter{Example 1: A very simple species}
 \label{sec:rock}
@@ -125,8 +181,8 @@ Here is the listing of |creatur-examples.cabal|.
 \verbatiminput{creatur-examples.cabal}
 
 \begin{enumerate}
-\item Make sure you're in the directory containing |creatur-examples.cabal|.
-\item Type |cabal install|.
+\item If you haven't already done so, follow the instructions in 
+\ref{sec:install}.
 \item Create the initial population by running |example1-init|.
 \item Start the daemon with the command |sudo example1-daemon start|.
 \item Stop the daemon with the command |sudo example1-daemon stop|.
@@ -308,8 +364,8 @@ ability to reproduce asexually.
 \label{sec:run2}
 
 \begin{enumerate}
-\item Make sure you're in the directory containing |creatur-examples.cabal|.
-\item Type |cabal install| (if you haven't already done so).
+\item If you haven't already done so, follow the instructions in 
+\ref{sec:install}.
 \item Create the initial population by running |example2-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}
@@ -375,8 +431,8 @@ ability to reproduce sexually.
 \label{sec:run3}
 
 \begin{enumerate}
-\item Make sure you're in the directory containing |creatur-examples.cabal|.
-\item Type |cabal install| (if you haven't already done so).
+\item If you haven't already done so, follow the instructions in 
+\ref{sec:install}.
 \item Create the initial population by running |example3-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}
@@ -439,6 +495,7 @@ where each species is a different Haskell type.
 \section{Create a species}
 \label{sec:species4}
 
+\input{src/Tutorial/Example4/Martian.tex}
 \input{src/Tutorial/Example4/Rock.tex}
 \input{src/Tutorial/Example4/Plant.tex}
 \input{src/Tutorial/Example4/Bug.tex}
@@ -457,8 +514,8 @@ where each species is a different Haskell type.
 \label{sec:run4}
 
 \begin{enumerate}
-\item Make sure you're in the directory containing |creatur-examples.cabal|.
-\item Type |cabal install| (if you haven't already done so).
+\item If you haven't already done so, follow the instructions in 
+\ref{sec:install}.
 \item Create the initial population by running |example4-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}
@@ -472,6 +529,8 @@ where each species is a different Haskell type.
 Log messages are sent to |example4/log/Example4.log|.
 
 \chapter{TO DO}
+\textit{Some things I'd like to do to enhance this tutorial...}
+
 \begin{enumerate}
 \item Explain that if you don't want the child to be immediately mature,
 you could have it be a field in the mother's implementation.
