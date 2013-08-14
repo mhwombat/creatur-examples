@@ -102,7 +102,7 @@ ISBN-13: 978-1593272838 \\
 Bryan O'Sullivan, Don Stewart, and John Goerzen \\
 ISBN-13: 978-0596514983 \\
 \url{http://book.realworldhaskell.org/}
-\end {enumerate}
+\end {itemize}
 
 
 The Haskell community is very friendly and welcoming to newbies.
@@ -119,7 +119,7 @@ The API documentation for Créatúr is available at
 \label{sec:daemon}
 
 The daemon clock is a simple counter used to schedule events.
-At each tick of the clock, the daemon
+At each tick of the clock, the daemon:
 
 \begin{enumerate}
 \item Reads the current list of agents, which are stored as separate files in
@@ -132,9 +132,10 @@ to use the CPU by invoking a user-supplied function.
 
 A different random order is used at each clock tick
 so that no agent has an unfair advantage.
-For example, if agents were always processed in the same order, 
-agents near the end of the list might find that that the desirable mating
-partners are already taken.
+(If agents were always processed in the same order, 
+agents near the end of the list might, for example, find that that the 
+best food has already been eaten or that the desirable mating
+partners are already taken.)
 
 \chapter{Overview of the process}
 
@@ -148,7 +149,7 @@ are listed below.
 \item Build and run the universe
 \end {enumerate}
 
-\chapter{Example 1: A very simple species}
+\chapter{A very simple species}
 \label{sec:rock}
 
 In this part of the tutorial, we create and run a universe
@@ -158,12 +159,12 @@ This will introduce you to the basics of the Créatúr framework.
 \section{Create a species}
 \label{sec:species1}
 
-\input{src/Tutorial/Example1/Rock.tex}
+\input{src/Tutorial/Chapter5/Rock.tex}
 
 \section{Generate an initial population}
 \label{sec:pop1}
 
-\input{src/Tutorial/Example1/GeneratePopulation.tex}
+\input{src/Tutorial/Chapter5/GeneratePopulation.tex}
 
 The procedure for running this program will be described in Section 
 \ref{sec:run1}.
@@ -171,7 +172,7 @@ The procedure for running this program will be described in Section
 \section{Configure a daemon}
 \label{sec:daemon1}
 
-\input{src/Tutorial/Example1/Daemon.tex}
+\input{src/Tutorial/Chapter5/Daemon.tex}
 
 \section{Build and run the example}
 \label{sec:run1}
@@ -181,15 +182,15 @@ Here is the listing of |creatur-examples.cabal|.
 \verbatiminput{creatur-examples.cabal}
 
 \begin{enumerate}
-\item If you haven't already done so, follow the instructions in 
+\item If you haven't already done so, follow the instructions in Chapter
 \ref{sec:install}.
-\item Create the initial population by running |example1-init|.
-\item Start the daemon with the command |sudo example1-daemon start|.
-\item Stop the daemon with the command |sudo example1-daemon stop|.
+\item Create the initial population by running |chapter5-init|.
+\item Start the daemon with the command |sudo chapter5-daemon start|.
+\item Stop the daemon with the command |sudo chapter5-daemon stop|.
 (Stopping the daemon may take a few seconds.)
 \end{enumerate}
 
-Log messages are sent to |rocktopia/log/Rocktopia.log|.
+Log messages are sent to |chapter5/log/Chapter5.log|.
 Examine that file and notice that the counter is counting up for both rocks.
 If you stop the daemon and restart it, it will pick up where it left off
 \footnote{When the stop command is received, the daemon will attempt
@@ -303,13 +304,24 @@ sequences of genetic material.
 To understand how this program works,
 let's walk through a simple example.
 Suppose this program acted on the following pair of sequences:
-|([A,A,A,A,A,A,A,A,A,A],[C,C,C,C,C,C,C,C,C,C])|.
-The first line \emph{might} perform a simple crossover,
-perhaps resulting in  |([A,A,A,A,A,A,A,C,C,C],[C,C,C,C,C,C,C,A,A,A])|.
-The second line \emph{might} then perform a cut-and-splice, perhaps
-resulting in |([A,A,A,A,C,A,A,A],[C,C,C,C,C,C,A,A,A,C,C,C])|.
-The third line \emph{might} then mutate one or both sequences, perhaps
-resulting in |([T,A,A,A,C,A,A,A],[C,C,C,C,C,C,A,A,C,C,C,C])|.
+\begin{code}
+([A,A,A,A,A,A,A,A,A,A],[C,C,C,C,C,C,C,C,C,C])
+\end{code} 
+The |randomCrossover| function \emph{might} perform a simple crossover,
+perhaps resulting in:
+\begin{code}
+([A,A,A,A,A,A,A,C,C,C],[C,C,C,C,C,C,C,A,A,A])
+\end{code} 
+The|randomCutAndSplice| function \emph{might} then perform a cut-and-splice, perhaps
+resulting in:
+\begin{code}
+([A,A,A,A,C,A,A,A],[C,C,C,C,C,C,A,A,A,C,C,C])
+\end{code} 
+The |mutatePairedLists| function \emph{might} then mutate one or both sequences, perhaps
+resulting in
+\begin{code}
+([T,A,A,A,C,A,A,A],[C,C,C,C,C,C,A,A,C,C,C,C])
+\end{code} 
 The numbers 0.1, 0.01, and 0.001 control the likelihood of each
 of the three operations occurring.
 After the first three operations, we have two new sequences.
@@ -339,7 +351,7 @@ Other recombination operators are also available.
 Consult the documentation of \path{ALife.Creatur.Genetics.Recombination}
 for more information.
 
-\chapter{Example 2: Asexual reproduction}
+\chapter{Asexual reproduction}
 \label{sec:plant}
 
 In this part of the tutorial, we create a species with the
@@ -348,65 +360,65 @@ ability to reproduce asexually.
 \section{Create a species}
 \label{sec:species2}
 
-\input{src/Tutorial/Example2/Plant.tex}
+\input{src/Tutorial/Chapter7/Plant.tex}
 
 \section{Generate an initial population}
 \label{sec:pop2}
 
-\input{src/Tutorial/Example2/GeneratePopulation.tex}
+\input{src/Tutorial/Chapter7/GeneratePopulation.tex}
 
 \section{Configure a daemon}
 \label{sec:daemon2}
 
-\input{src/Tutorial/Example2/Daemon.tex}
+\input{src/Tutorial/Chapter7/Daemon.tex}
 
 \section{Build and run the example}
 \label{sec:run2}
 
 \begin{enumerate}
-\item If you haven't already done so, follow the instructions in 
+\item If you haven't already done so, follow the instructions in Chapter 
 \ref{sec:install}.
-\item Create the initial population by running |example2-init|.
+\item Create the initial population by running |chapter7-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}
 \DefineShortVerb{\+}
-+sudo example2-daemon start|stop|restart+.
++sudo chapter7-daemon start|stop|restart+.
 \UndefineShortVerb{\+}
 \DefineShortVerb{\|}
 (Stopping the daemon may take a few seconds.)
 \end{enumerate}
 
-Log messages are sent to |example2/log/Example2.log|.
+Log messages are sent to |chapter7/log/Chapter7.log|.
 
 A sample extract from the log file is shown below.
 To conserve space, the timestamps have been omitted.
 From this, you can see that the first mating (between |Rose| and |Sunny|)
 occurs at time 0.
-The offspring, |Example2_1|, gets its first CPU turn at time 1.
+The offspring, |Chapter7_1|, gets its first CPU turn at time 1.
 
 \begin{verbatim}
 Starting
-0       Vi and Rose gave birth to Example2_1, with Red flowers
-0       Rose and Vi gave birth to Example2_2, with Violet flowers
-0       Sunny and Rose gave birth to Example2_3, with Red flowers
-1       Example2_1 and Sunny gave birth to Example2_4, with Yellow flowers
-1       Rose and Vi gave birth to Example2_5, with Violet flowers
-1       Example2_3 and Example2_2 gave birth to Example2_6, with Red flowers
-1       Example2_2 and Sunny gave birth to Example2_7, with Violet flowers
-1       Vi and Example2_7 gave birth to Example2_8, with Violet flowers
-1       Sunny and Example2_8 gave birth to Example2_9, with Yellow flowers
-2       Example2_4 and Rose gave birth to Example2_10, with Yellow flowers
-2       Example2_7 and Example2_6 gave birth to Example2_11, with Violet flowers
-2       Example2_6 and Rose gave birth to Example2_12, with Red flowers
-2       Example2_5 and Example2_10 gave birth to Example2_13, with Violet flowers
-2       Example2_3 and Example2_7 gave birth to Example2_14, with Red flowers
-2       Example2_8 and Example2_14 gave birth to Example2_15, with Red flowers
-2       Rose and Example2_14 gave birth to Example2_16, with Red flowers
-2       Sunny and Example2_12 gave birth to Example2_17, with Yellow flowers
-2       Vi and Example2_5 gave birth to Example2_18, with Violet flowers
+0       Vi and Rose gave birth to Chapter7_1, with Red flowers
+0       Rose and Vi gave birth to Chapter7_2, with Violet flowers
+0       Sunny and Rose gave birth to Chapter7_3, with Red flowers
+1       Chapter7_1 and Sunny gave birth to Chapter7_4, with Yellow flowers
+1       Rose and Vi gave birth to Chapter7_5, with Violet flowers
+1       Chapter7_3 and Chapter7_2 gave birth to Chapter7_6, with Red flowers
+1       Chapter7_2 and Sunny gave birth to Chapter7_7, with Violet flowers
+1       Vi and Chapter7_7 gave birth to Chapter7_8, with Violet flowers
+1       Sunny and Chapter7_8 gave birth to Chapter7_9, with Yellow flowers
+2       Chapter7_4 and Rose gave birth to Chapter7_10, with Yellow flowers
+2       Chapter7_7 and Chapter7_6 gave birth to Chapter7_11, with Violet flowers
+2       Chapter7_6 and Rose gave birth to Chapter7_12, with Red flowers
+2       Chapter7_5 and Chapter7_10 gave birth to Chapter7_13, with Violet flowers
+2       Chapter7_3 and Chapter7_7 gave birth to Chapter7_14, with Red flowers
+2       Chapter7_8 and Chapter7_14 gave birth to Chapter7_15, with Red flowers
+2       Rose and Chapter7_14 gave birth to Chapter7_16, with Red flowers
+2       Sunny and Chapter7_12 gave birth to Chapter7_17, with Yellow flowers
+2       Vi and Chapter7_5 gave birth to Chapter7_18, with Violet flowers
 \end{verbatim}
 
-\chapter{Example 3: Sexual reproduction}
+\chapter{Sexual reproduction}
 \label{sec:bug}
 
 In this part of the tutorial, we create a species with the
@@ -415,35 +427,35 @@ ability to reproduce sexually.
 \section{Create a species}
 \label{sec:species3}
 
-\input{src/Tutorial/Example3/Bug.tex}
+\input{src/Tutorial/Chapter8/Bug.tex}
 
 \section{Generate an initial population}
 \label{sec:pop3}
 
-\input{src/Tutorial/Example3/GeneratePopulation.tex}
+\input{src/Tutorial/Chapter8/GeneratePopulation.tex}
 
 \section{Configure a daemon}
 \label{sec:daemon3}
 
-\input{src/Tutorial/Example3/Daemon.tex}
+\input{src/Tutorial/Chapter8/Daemon.tex}
 
 \section{Build and run the example}
 \label{sec:run3}
 
 \begin{enumerate}
-\item If you haven't already done so, follow the instructions in 
+\item If you haven't already done so, follow the instructions in Chapter 
 \ref{sec:install}.
-\item Create the initial population by running |example3-init|.
+\item Create the initial population by running |chapter8-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}
 \DefineShortVerb{\+}
-+sudo example3-daemon start|stop|restart+.
++sudo chapter8-daemon start|stop|restart+.
 \UndefineShortVerb{\+}
 \DefineShortVerb{\|}
 (Stopping the daemon may take a few seconds.)
 \end{enumerate}
 
-Log messages are sent to |example3/log/Example3.log|.
+Log messages are sent to |chapter8/log/Chapter8.log|.
 
 A sample extract from the log file is shown below.
 
@@ -452,88 +464,147 @@ A sample extract from the log file is shown below.
 130121134119+0000       0       Zelda just woke up. Energy=10
 130121134119+0000       0       Zelda sees Mel
 130121134119+0000       0       Zelda mated with Mel.
-130121134119+0000       0       Zelda and Mel gave birth to Example3_1, a Green Male bug
+130121134119+0000       0       Zelda and Mel gave birth to Chapter8_1, a Green Male bug
 130121134119+0000       0       Zelda is going back to sleep. Energy=9
 130121134119+0000       0       Mel just woke up. Energy=10
 130121134119+0000       0       Mel is going back to sleep. Energy=9
 130121134119+0000       0       Betty just woke up. Energy=10
 130121134119+0000       0       Betty sees Bugsy
 130121134119+0000       0       Betty mated with Bugsy.
-130121134119+0000       0       Betty and Bugsy gave birth to Example3_2, a Green Male bug
+130121134119+0000       0       Betty and Bugsy gave birth to Chapter8_2, a Green Male bug
 130121134119+0000       0       Betty is going back to sleep. Energy=9
 130121134119+0000       0       Bugsy just woke up. Energy=10
 130121134119+0000       0       Bugsy is going back to sleep. Energy=9
 130121134119+0000       1       Mel just woke up. Energy=9
 130121134119+0000       1       Mel is going back to sleep. Energy=8
 130121134119+0000       1       Zelda just woke up. Energy=9
-130121134119+0000       1       Zelda sees Example3_1
-130121134119+0000       1       Zelda mated with Example3_1.
-130121134119+0000       1       Zelda and Example3_1 gave birth to Example3_3, a Green Male bug
+130121134119+0000       1       Zelda sees Chapter8_1
+130121134119+0000       1       Zelda mated with Chapter8_1.
+130121134119+0000       1       Zelda and Chapter8_1 gave birth to Chapter8_3, a Green Male bug
 130121134119+0000       1       Zelda is going back to sleep. Energy=8
 130121134119+0000       1       Betty just woke up. Energy=9
 130121134119+0000       1       Betty sees Zelda
 130121134119+0000       1       Betty is not interested in Zelda.
 130121134119+0000       1       Betty is going back to sleep. Energy=8
-130121134119+0000       1       Example3_1 just woke up. Energy=10
-130121134119+0000       1       Example3_1 is going back to sleep. Energy=9
-130121134119+0000       1       Example3_2 just woke up. Energy=10
-130121134119+0000       1       Example3_2 is going back to sleep. Energy=9
+130121134119+0000       1       Chapter8_1 just woke up. Energy=10
+130121134119+0000       1       Chapter8_1 is going back to sleep. Energy=9
+130121134119+0000       1       Chapter8_2 just woke up. Energy=10
+130121134119+0000       1       Chapter8_2 is going back to sleep. Energy=9
 130121134119+0000       1       Bugsy just woke up. Energy=9
 130121134119+0000       1       Bugsy is going back to sleep. Energy=8
-130121134120+0000       2       Example3_1 just woke up. Energy=9
-130121134120+0000       2       Example3_1 is going back to sleep. Energy=8
+130121134120+0000       2       Chapter8_1 just woke up. Energy=9
+130121134120+0000       2       Chapter8_1 is going back to sleep. Energy=8
 130121134120+0000       2       Bugsy just woke up. Energy=8
 130121134120+0000       2       Bugsy is going back to sleep. Energy=7
 \end{verbatim}
 
-\chapter{Example 4: Working with multiple species}
-\label{sec:multiple}
+\chapter{Generating a random initial population}
+\label{sec:random}
 
-In this part of the tutorial, we a universe with multiple species,
-where each species is a different Haskell type.
+In this part of the tutorial, we generate a random initial population.
 
 \section{Create a species}
 \label{sec:species4}
 
-\input{src/Tutorial/Example4/Martian.tex}
-\input{src/Tutorial/Example4/Rock.tex}
-\input{src/Tutorial/Example4/Plant.tex}
-\input{src/Tutorial/Example4/Bug.tex}
+\input{src/Tutorial/Chapter9/Bug.tex}
 
 \section{Generate an initial population}
 \label{sec:pop4}
 
-\input{src/Tutorial/Example4/GeneratePopulation.tex}
+\input{src/Tutorial/Chapter9/GeneratePopulation.tex}
 
 \section{Configure a daemon}
 \label{sec:daemon4}
 
-\input{src/Tutorial/Example4/Daemon.tex}
+\input{src/Tutorial/Chapter9/Daemon.tex}
 
 \section{Build and run the example}
 \label{sec:run4}
 
 \begin{enumerate}
-\item If you haven't already done so, follow the instructions in 
+\item If you haven't already done so, follow the instructions in Chapter 
 \ref{sec:install}.
-\item Create the initial population by running |example4-init|.
+\item Create the initial population by running |chapter9-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}
 \DefineShortVerb{\+}
-+sudo example4-daemon start|stop|restart+.
++sudo chapter9-daemon start|stop|restart+.
 \UndefineShortVerb{\+}
 \DefineShortVerb{\|}
 (Stopping the daemon may take a few seconds.)
 \end{enumerate}
 
-Log messages are sent to |example4/log/Example4.log|.
+Log messages are sent to |chapter9/log/Chapter10.log|.
+
+\chapter{Working with multiple species}
+\label{sec:multiple}
+
+In this part of the tutorial, we create a universe with multiple species,
+where each species is a different Haskell type.
+
+\section{Create a species}
+\label{sec:species5}
+
+\input{src/Tutorial/Chapter10/Martian.tex}
+\input{src/Tutorial/Chapter10/Rock.tex}
+\input{src/Tutorial/Chapter10/Plant.tex}
+\input{src/Tutorial/Chapter10/Bug.tex}
+
+\section{Generate an initial population}
+\label{sec:pop5}
+
+\input{src/Tutorial/Chapter10/GeneratePopulation.tex}
+
+\section{Configure a daemon}
+\label{sec:daemon5}
+
+\input{src/Tutorial/Chapter10/Daemon.tex}
+
+\section{Build and run the example}
+\label{sec:run5}
+
+\begin{enumerate}
+\item If you haven't already done so, follow the instructions in Chapter 
+\ref{sec:install}.
+\item Create the initial population by running |chapter10-init|.
+\item Start/stop/restart the daemon with the command
+\UndefineShortVerb{\|}
+\DefineShortVerb{\+}
++sudo chapter10-daemon start|stop|restart+.
+\UndefineShortVerb{\+}
+\DefineShortVerb{\|}
+(Stopping the daemon may take a few seconds.)
+\end{enumerate}
+
+Log messages are sent to |chapter10/log/Chapter10.log|.
+
+\chapter{Advanced techniques}
+\label{sec:advanced}.
+
+\input{src/Tutorial/Chapter11/Example.tex}
+
+\chapter{FAQ}
+
+Frequently Anticipated Questions
+
+Q: What causes this (or a similar) error message?
+\begin{code}
+    No instance for (ALife.Creatur.Genetics.Code.BRGCWord8.GGene
+                       (GHC.Generics.Rep ClassifierGene))
+      arising from a use of `ALife.Creatur.Genetics.Code.BRGCWord8.$gdmput'
+\end{code}
+
+A: Did you remember to add |deriving Generic| to your gene type?
 
 \chapter{TO DO}
 \textit{Some things I'd like to do to enhance this tutorial...}
 
 \begin{enumerate}
-\item Explain that if you don't want the child to be immediately mature,
-you could have it be a field in the mother's implementation.
+\item Explain that if you don't want the child to be immediately mature
+and able to interact with other agents and mate,
+you could keep it as a field in the mother's implementation
+until it's mature.
+Include an example.
 
 \item Show how to collect statistics.
 

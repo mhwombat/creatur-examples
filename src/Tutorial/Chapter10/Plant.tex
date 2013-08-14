@@ -1,0 +1,18 @@
+We can re-use the implementation of |Plant| from Section \ref{sec:plant},
+with a few changes.
+The code that implements mating has been moved into a custom
+|tryMating| function.
+Again, we can drop the |run| method because
+all agents will use the |run| method in \path{Tutorial.Chapter10.Martian}.
+For a little variety, we'll store the genetic information as |[Word8]|
+instead of |[Bool]|.
+To make that change, we only need to modify the import to:
+
+\begin{code}
+import ALife.Creatur.Genetics.BRGCWord8 . . .
+\end{code}
+
+The complete code listing is below.
+
+\includeSource{src/Tutorial/Chapter10/Plant.hs}
+

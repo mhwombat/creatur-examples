@@ -1,0 +1,62 @@
+Let's make or bugs more interesting by adding spots.
+\begin{code}
+data Bug = Bug
+  { 
+    bugName :: String,
+    bugColour :: BugColour,
+    bugSpots :: [BugColour],
+    bugSex :: Sex,
+    bugEnergy :: Int,
+    bugGenome :: DiploidSequence
+  } deriving (Show, Generic)
+\end{code} 
+
+We'll also allow a broader range of colours.
+
+\begin{code}
+data BugColour = Green | Purple | Red | Brown | Orange | Pink | Blue
+  deriving (Show, Eq, Enum, Bounded, Generic)
+\end{code} 
+
+Creating a random sequence of genes is not difficult.
+But how long should the string be?
+We'd have to calculate the number of bits required
+to represent the colours we've allowed.
+Furthermore, the length of the sequence depends
+on how many spots the bug has.
+So we need to know the at least part of the decoded value of the sequence
+in order to determine the length required.
+We could just create a random gene sequence that is longer than we expect to need;
+the extra genes won't do any harm, and might eventually become useful as the result of recombination.
+But that is somewhat wasteful.
+
+It might be better to have the initial population start with a ``clean'' genome
+where the entire sequence is used.
+Recombination will eventually make some sequences longer, and others shorter,
+but on average we would expect the sequences to be a reasonable length.
+
+Fortunately, there is an easy way to do this.
+When creating our initial population, we can pass |buildBug| an infinite gene sequence,
+but instruct it to keep only as much of the sequence as it needs to build a complete bug.
+We add a flag to the |buildBug| function to tell it whether it should truncate the sequence
+(which is what we want when creating the initial population),
+or keep the entire gene sequence
+(which is what we want during normal operation). 
+Another change is that we used |getAndExpress| instead of
+|getAndExpressWithDefault|.
+If the genome is invalid, |buildBug| will return |Nothing|.
+
+\begin{code}
+buildBug :: Bool -> String -> DiploidReader (Maybe Bug)
+buildBug truncateGenome name = do
+  sex <- getAndExpress
+  colour <- getAndExpress
+  spots <- getAndExpress
+  g <- if truncateGenome then consumed2 else copy2
+  return $ Bug name <$> sex <*> colour <*> spots <*> pure 10 <*> pure g
+\end{code} 
+
+The complete code listing is below.
+
+\includeSource{src/Tutorial/Chapter9/Bug.hs}
+

@@ -1,0 +1,62 @@
+In the previous chapters, we developed agents with very simple genes.
+However, genes can be arbitrarily complex.
+The default implementation of |Gene| is usually sufficient,
+as in the following example.
+
+\begin{code}
+data ComplexGene = A | B Colour | C Word8 | D Bool Char | E [ComplexGene]
+  deriving (Show, Eq, Generic)
+
+instance Genetic ComplexGene
+\end{code}
+
+You are not restricted to using the default implementation of |Gene|.
+In the following example, we write a custom implementation.
+You can mix custom and default implementations;
+the implementation of |Gene| for |CustomGene|
+uses the default implementation of |Gene| for |Colour|.
+
+\begin{code}
+data CustomGene = F Colour | G Bool
+  deriving (Show, Eq, Generic)
+
+instance Genetic CustomGene where
+  put (F c) = putRawWord8 7 >> put c
+  put (G b) = putRawWord8 8 >> put b
+  get = do
+    x <- getRawWord8
+    case x of
+      (Just 7) -> do
+        c <- get :: Reader (Maybe Colour)
+        return . fmap F $ c
+      (Just 8) -> do
+        b <- get :: Reader (Maybe Bool)
+        return . fmap G $ b
+      _      -> return Nothing
+\end{code}
+
+One reason you might want to write a custom implementation of |Gene|
+is for efficiency.
+In this example, we store three boolean values in a Word8 value
+to reduce the amount of storage required.
+      
+\begin{code}
+data CustomGene2 = H Bool Bool Bool
+  deriving (Show, Eq, Generic)
+
+instance Genetic CustomGene2 where
+  put (H x y z) = putRawWord8 (x' + y' + z')
+    where x' = (4 *) . fromIntegral . fromEnum $ x :: Word8
+          y' = (2 *) . fromIntegral . fromEnum $ y :: Word8
+          z' = fromIntegral . fromEnum $ z :: Word8
+  get = do
+    w <- getRawWord8 :: Reader (Maybe Word8)
+    let x = fmap (flip testBit 2) w :: Maybe Bool
+    let y = fmap (flip testBit 1) w :: Maybe Bool
+    let z = fmap (flip testBit 0) w :: Maybe Bool
+    return $ H <$> x <*> y <*> z
+\end{code}
+
+You will find these examples in the code listing below.
+To run the example, type |chapter11|.
+\includeSource{src/Tutorial/Chapter11/Example.hs}

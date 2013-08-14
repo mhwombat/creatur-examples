@@ -1,0 +1,166 @@
+We create a type to represent the |Bug| species.
+Each bug has a unique ID, a colour, sex, an energy level,
+and some genetic information.
+Because our bugs will reproduce \emph{sexually}, they have \emph{two} sets of genes, 
+one inherited from each parent.
+Thus, the genome will be stored as
+a |PairedSequence| instead of a |Sequence|.
+
+\begin{code}
+data Bug = Bug
+  { 
+    bugName :: String,
+    bugColour :: BugColour,
+    bugSex :: Sex,
+    bugEnergy :: Int,
+    bugGenome :: DiploidSequence
+  } deriving (Show, Generic)
+
+instance Serialize Bug
+\end{code} 
+
+We make |Bug| implement the |Agent| 
+and |Record| classes.
+Our bugs will stay alive until their energy reaches zero.
+
+\begin{code}
+instance Agent Bug where
+  agentId = bugName
+  isAlive bug = bugEnergy bug > 0
+
+instance Record Bug where key = agentId
+\end{code} 
+
+We create the genes for colour and sex.
+
+\begin{code}
+data BugColour = Green | Purple
+  deriving (Show, Eq, Enum, Bounded, Generic)
+instance Serialize BugColour
+instance Genetic BugColour
+
+data Sex = Male | Female
+  deriving (Show, Eq, Enum, Bounded, Generic)
+instance Serialize Sex
+instance Genetic Sex
+\end{code} 
+
+Recall that our bugs have \emph{two} sets of genes.
+These genes may not be identical,
+so we need a way to determine the resulting colour of the bug
+from its genes.
+The |Diploid| class contains a method called |generic|, which, 
+given two possible forms of a gene, takes into account any dominance relationship,
+and returns a gene representing the result.
+
+We could write an implementation of |express|,
+but the |Diploid| class provides a generic implementation.
+The generic implementation of |express| chooses the "smaller" of the two values.
+For numeric values, this simply means taking the minimum of the two values,
+so a gene with a value of |3.5| is dominant over one with a value of |7.6|.
+For types with multiple constructors, the constructors that appear
+earlier in the definition are dominant over those that appear later,
+so a |Male| gene will be dominant over a |Female| gene.
+In other words, a bug with two |Female| genes is female, but a bug with at least one 
+|Male| gene is male.
+This is loosely based on the XY-chromosome system used by
+humans and some other animals.
+(To avoid giving the males too much power, we'll let the females initiate mating!)
+
+\begin{code}
+instance Diploid BugColour
+instance Diploid Sex
+\end{code} 
+
+To support reproduction, we need a way to build a bug from its genome.
+Like the plants we created earlier, each bug needs a copy of its genome in order to produce offspring.
+For plants, we used the method |copy| to get the unread genetic information.
+However, bugs have two sets of genes, so we use |copyPair| instead.
+Next, we determine the sex and colour of the bug from its genome.
+We could use the method |getAndExpress| in the module |BRGCBool|, 
+which returns a |Maybe| value containing a tuple with the first gene in a sequence,
+and the rest of the paired sequences.
+It may happen that neither sequence of |Bool|s begins with
+a valid code for a colour or for the sex, in which case the call to |getAndExpress|
+would return |Nothing|.
+For convenience, we'll use the |getAndExpressWithDefault| method instead,
+supplying a default sex and colour.
+All bugs start life with 10 units of energy.
+\begin{code}
+buildBug :: String -> DiploidReader (Maybe Bug)
+buildBug name = do
+  g <- copyPair
+  sex <- getAndExpressWithDefault Female
+  colour <- getAndExpressWithDefault Green
+  return . Just $ Bug name colour sex 10 g
+\end{code}
+
+Next, we need a way to mate two bugs and produce some offspring.
+We can do this by implementing the |Reproductive| class in 
+\path{ALife.Creatur.Genetics.Reproduction.Sexual}.
+This class requires us to implement the following:
+\begin{enumerate}
+\item A type called |Base|, which specifies the type used to encode
+genes for this species. Recall that we've used |Bool|s for this purpose.
+\item A method called |produceGamete| which shuffles (and maybe mutates)
+the two sequences of genes from one parent, 
+and then produces a \emph{single} sequence that will become part of the
+child's genome.
+(This is analogous to creating either a single sperm or ova.)
+\item A method called |build| which creates the offspring.
+We can use the |buildBug| method that we've already created,
+and pass it to |runReader|.
+\end {enumerate}
+
+\begin{code}
+instance Reproductive Bug where
+  type Base Bug = Sequence
+  produceGamete a = 
+    repeatWithProbability 0.1 randomCrossover (bugGenome a) >>=
+    withProbability 0.01 randomCutAndSplice >>=
+    withProbability 0.001 mutatePairedLists >>=
+    randomOneOfPair
+  build name = runDiploidReader (buildBug name)
+\end{code} 
+
+Although the implementation of |produceGamete| is similar to that
+of |recombine| for the |Plant| class, 
+these two functions have different uses.
+Asexual reproduction uses |recombine| to mix the genetic
+information from two parents;
+the resulting sequence becomes the entire genome of the child.
+Sexual reproduction uses |produceGamete| to mix the genetic information
+from \emph{one} parent;
+the resulting sequence becomes \emph{half} of the genome of the child.
+The other half of the child's genome comes from the other parent,
+also generated using |produceGamete|.
+
+|run| is invoked when it is the agent's turn to use the CPU.
+Let's let the females initiate mating.
+If this bug is female, and the second bug is male, then mating occurs.
+If mating occurs, we deduct one unit of energy.
+
+\begin{code}
+run :: [Bug] -> StateT (SimpleUniverse a) IO [Bug]
+run (me:other:_) = do
+  writeToLog $ agentId me ++ "'s turn" 
+  if bugSex me == Female && bugSex other == Male
+    then do
+      name <- genName
+      (Just baby) <- liftIO $ evalRandIO (makeOffspring me other name)
+      writeToLog $ 
+        bugName me ++ " and " ++ bugName other ++
+          " gave birth to " ++ name ++ ", a " ++ 
+          show (bugColour baby) ++ " " ++ show (bugSex baby) ++ " bug"
+      return [deductMatingEnergy me, deductMatingEnergy other, baby]
+    else return [me, other]
+run x = return x -- need two agents to mate
+
+deductMatingEnergy :: Bug -> Bug
+deductMatingEnergy bug = bug {bugEnergy=bugEnergy bug - 1}
+\end{code}
+
+The complete code listing is below.
+
+\includeSource{src/Tutorial/Chapter8/Bug.hs}
+
