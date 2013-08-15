@@ -75,7 +75,7 @@ instance Diploid Sex
 To support reproduction, we need a way to build a bug from its genome.
 Like the plants we created earlier, each bug needs a copy of its genome in order to produce offspring.
 For plants, we used the method |copy| to get the unread genetic information.
-However, bugs have two sets of genes, so we use |copyPair| instead.
+However, bugs have two sets of genes, so we use |copy2| instead.
 Next, we determine the sex and colour of the bug from its genome.
 We could use the method |getAndExpress| in the module |BRGCBool|, 
 which returns a |Maybe| value containing a tuple with the first gene in a sequence,
@@ -89,7 +89,7 @@ All bugs start life with 10 units of energy.
 \begin{code}
 buildBug :: String -> DiploidReader (Maybe Bug)
 buildBug name = do
-  g <- copyPair
+  g <- copy2
   sex <- getAndExpressWithDefault Female
   colour <- getAndExpressWithDefault Green
   return . Just $ Bug name colour sex 10 g
@@ -135,10 +135,13 @@ the resulting sequence becomes \emph{half} of the genome of the child.
 The other half of the child's genome comes from the other parent,
 also generated using |produceGamete|.
 
-|run| is invoked when it is the agent's turn to use the CPU.
+The function |run| is invoked when it is the agent's turn to use the CPU.
+It takes a list of all agents in the population, with the current agent at the head of the list.
+It returns a list of agents that have been created or modified during the turn.
 Let's let the females initiate mating.
 If this bug is female, and the second bug is male, then mating occurs.
 If mating occurs, we deduct one unit of energy.
+If mating does not occur, then no agents have been modified so we return an empty list.
 
 \begin{code}
 run :: [Bug] -> StateT (SimpleUniverse a) IO [Bug]
@@ -153,7 +156,7 @@ run (me:other:_) = do
           " gave birth to " ++ name ++ ", a " ++ 
           show (bugColour baby) ++ " " ++ show (bugSex baby) ++ " bug"
       return [deductMatingEnergy me, deductMatingEnergy other, baby]
-    else return [me, other]
+    else return []
 run x = return x -- need two agents to mate
 
 deductMatingEnergy :: Bug -> Bug

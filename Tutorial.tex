@@ -230,6 +230,19 @@ This demonstrates the randomisation discussed in section \ref{sec:daemon}.
 130121121234+0000       4       Roxie's counter is 103
 \end{verbatim}
 
+\section{Key points}
+
+\begin{itemize}
+\item Any species used in the Créatúr framework must be an instance of |ALife.Creatur.Agent|
+and |Serialize|.
+Normally the species should also be an instance of |ALife.Creatur.Database.Record|.
+\item It is generally not necessary to write an implementation of |Serialize|.
+Instead, add |deriving Generic| to the declaration,
+and declare |instance Serialize MyClass|.
+\item Consult the haddock documentation (http://hackage.haskell.org/package/creatur)
+for more detailed information about the API.
+\end{itemize}
+
 \chapter{Recombination}
 \label{sec:recombination}
 
@@ -418,6 +431,23 @@ Starting
 2       Vi and Chapter7_5 gave birth to Chapter7_18, with Violet flowers
 \end{verbatim}
 
+\section{Key points}
+
+\begin{itemize}
+\item A species that reproduces should be an instance of the |Genetic| class in
+one of the |ALife.Creatur.Genetics.Code.*| modules,
+e.g., |ALife.Creatur.Genetics.Code.BRGCBool|.
+\item It is generally not necessary to write an implementation of |Genetic|.
+Instead, add |deriving Generic| to the declaration,
+and declare |instance Genetic MyClass|.
+\item In order for a type to use a generic implementation for a class such as
+|Serialize| or |Genetic|, any type that it ``contains'' must also be an instance of that class.
+\item Encoding genetic information using a Gray code helps to ensure that offspring
+are similar to their parents (unless a mutation occurs).
+\item The module |ALife.Creatur.Genetics.Recombination| provides functions
+for controlling how the genes of the parents are shuffled to produce the child's genome.
+\end{itemize}
+
 \chapter{Sexual reproduction}
 \label{sec:bug}
 
@@ -498,6 +528,22 @@ A sample extract from the log file is shown below.
 130121134120+0000       2       Bugsy is going back to sleep. Energy=7
 \end{verbatim}
 
+\section{Key points}
+
+\begin{itemize}
+\item A species that reproduces \emph{sexually} should be an instance of
+|Diploid| (as well as |Genetic|).
+\item It is generally not necessary to write an implementation of |Diploid|.
+Instead, add |deriving Generic| to the declaration,
+and declare |instance Diploid MyClass|.
+\item The generic implementation of |Diploid| chooses the ``smaller'' of two values.
+For types with multiple constructors, this means that constructors that appear
+earlier in the definition are dominant over those that
+appear later.
+\item The list of agents returned by the ``run'' method only needs to contain agents that
+have been modified.
+\end{itemize}
+
 \chapter{Generating a random initial population}
 \label{sec:random}
 
@@ -535,6 +581,15 @@ In this part of the tutorial, we generate a random initial population.
 \end{enumerate}
 
 Log messages are sent to |chapter9/log/Chapter10.log|.
+
+\section{Key points}
+
+\begin{itemize}
+\item To create a species for which the initial population can be randomly generated,
+add a parameter to the ``build'' method that controls whether the gene sequence is truncated.
+\item When creating the initial population, use truncation.
+Thereafter, turn truncation off.
+\end{itemize}
 
 \chapter{Working with multiple species}
 \label{sec:multiple}
@@ -577,6 +632,13 @@ where each species is a different Haskell type.
 \end{enumerate}
 
 Log messages are sent to |chapter10/log/Chapter10.log|.
+
+\section{Key points}
+
+\begin{itemize}
+\item To work with multiple species, where each species is a different Haskell type,
+unify the types with a ``container'' type (e.g., the |Martian| class).
+\end{itemize}
 
 \chapter{Advanced techniques}
 \label{sec:advanced}.

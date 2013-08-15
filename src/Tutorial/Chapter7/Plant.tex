@@ -147,7 +147,10 @@ The rest of the list contains agents it could interact with.
 (We only need to use the first two elements of this list.)
 Finally, the program must return a list of agents that it has modified.
 
-The function |run| ``mates'' two plants and takes away one unit of energy 
+The function |run| is invoked when it is the agent's turn to use the CPU.
+It takes a list of all agents in the population, with the current agent at the head of the list.
+It returns a list of agents that have been created or modified during the turn.
+In this implementation, |run| ``mates'' two plants and takes away one unit of energy 
 to represent the energy cost of reproduction
 (otherwise the plants would live forever).
 

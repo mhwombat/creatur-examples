@@ -85,7 +85,7 @@ run (me:other:_) = do
       writeToLog $ "Father: " ++ show other
       writeToLog $ "Baby: " ++ show baby
       return [deductMatingEnergy me, deductMatingEnergy other, baby]
-    else return [me, other]
+    else return []
 run x = return x -- need two agents to mate
 
 deductMatingEnergy :: Bug -> Bug

@@ -88,8 +88,8 @@ tryMating (me:other:_) = do
     else do
       writeToLog $ bugName me ++ " is not interested in "
         ++ bugName other
-      return [me, other]
-tryMating x = return x -- need two agents to mate
+      return []
+tryMating _ = return [] -- need two agents to mate
 
 deductMatingEnergy :: Bug -> Bug
 deductMatingEnergy bug = bug {bugEnergy=bugEnergy bug - 1}
