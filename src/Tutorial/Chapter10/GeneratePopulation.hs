@@ -1,62 +1,54 @@
 import Tutorial.Chapter10.Rock (Rock(..))
-import Tutorial.Chapter10.Plant (FlowerColour(..), buildPlant)
-import Tutorial.Chapter10.Bug (Sex(..), BugColour(..),
-  buildBug)
+import Tutorial.Chapter10.Plant (buildPlant)
+import Tutorial.Chapter10.Bug (buildBug)
 import Tutorial.Chapter10.Martian (Martian(..))
-import ALife.Creatur.Genetics.BRGCWord8 (put, runWriter, runReader,
-  runDiploidReader)
+import ALife.Creatur.Genetics.BRGCWord8 (Reader, DiploidReader, 
+  runReader, runDiploidReader)
 import ALife.Creatur.Universe (addAgent, mkSimpleUniverse)
+import Data.Either (rights)
 import Control.Monad.State.Lazy (evalStateT)
-import Data.Maybe (fromJust)
+import System.Random (getStdGen, newStdGen, randoms)
+
+buildPlants :: [String] -> Reader [Martian]
+buildPlants names = do
+  xs <- mapM (buildPlant True) names
+  return . map FromPlant . rights $ xs
+
+buildBugs :: [String] -> DiploidReader [Martian]
+buildBugs names = do
+  xs <- mapM (buildBug True) names
+  return . map FromBug . rights $ xs
+
 
 main :: IO ()
 main = do
   let u = mkSimpleUniverse "Chapter10" "chapter10" 100000
 
   -- Create some rocks and save them in the population directory.
-  let a = FromRock $ Rock "Rocky" 0
-  evalStateT (addAgent a) u
+  let rock1 = FromRock $ Rock "Rocky" 0
+  evalStateT (addAgent rock1) u
 
-  let b = FromRock $ Rock "Roxie" 0
-  evalStateT (addAgent b) u
+  let rock2 = FromRock $ Rock "Roxie" 0
+  evalStateT (addAgent rock2) u
 
   -- Create some plants and save them in the population directory.
-  let gp1 = runWriter (put Red)
-  let p1 = FromPlant . fromJust $ runReader (buildPlant "Rose") gp1
-  evalStateT (addAgent p1) u
+  let plantNames = ["Rose", "Sunny", "Vi"]
 
-  let gp2 = runWriter (put Yellow)
-  let p2 = FromPlant . fromJust $ runReader (buildPlant "Sunny") gp2
-  evalStateT (addAgent p2) u
+  r <- newStdGen -- source of random genes
+  let g = randoms r
 
-  let gp3 = runWriter (put Violet)
-  let p3 = FromPlant . fromJust $ runReader (buildPlant "Vi") gp3
-  evalStateT (addAgent p3) u
+  let plants = runReader (buildPlants plantNames) g
+  mapM_ (\b -> evalStateT (addAgent b) u) plants
 
   -- Create some Bugs and save them in the population directory.
-  let gb1 = runWriter (put Male >> put Green)
-  let b1 = FromBug . fromJust $ runDiploidReader (buildBug "Bugsy") (gb1,gb1)
-  evalStateT (addAgent b1) u
+  let bugNames = ["Bugsy", "Mel", "Flo", "Buzz"]
 
-  let gb2 = runWriter (put Male >> put Purple) 
-  let b2 = FromBug . fromJust $ runDiploidReader (buildBug "Mel") (gb2,gb2)
-  evalStateT (addAgent b2) u
+  r1 <- newStdGen -- source of random genes
+  r2 <- getStdGen -- source of random genes
 
-  let gb3 = runWriter (put Female >> put Green)
-  let b3 = FromBug . fromJust $ runDiploidReader (buildBug "Flo") (gb3,gb3)
-  evalStateT (addAgent b3) u
-
-  let gb4 = runWriter (put Male >> put Purple)
-  let b4 = FromBug . fromJust $ runDiploidReader (buildBug "Buzz") (gb4,gb4)
-  evalStateT (addAgent b4) u
-
-  let gb5 = runWriter (put Female >> put Green)
-  let b5 = FromBug . fromJust $ runDiploidReader (buildBug "Betty") (gb5,gb5)
-  evalStateT (addAgent b5) u
-
-  let gb6 = runWriter (put Female >> put Green)
-  let b6 = FromBug . fromJust $ runDiploidReader (buildBug "Anna") (gb6,gb6)
-  evalStateT (addAgent b6) u
-
-  return ()
+  let g1 = randoms r1
+  let g2 = randoms r2
+  
+  let bugs = runDiploidReader (buildBugs bugNames) (g1, g2)
+  mapM_ (\b -> evalStateT (addAgent b) u) bugs
 

@@ -36,13 +36,13 @@ instance Genetic CustomGene where
   get = do
     x <- getRawWord8
     case x of
-      (Just 7) -> do
-        c <- get :: Reader (Maybe Colour)
+      (Right 7) -> do
+        c <- get :: Reader (Either [String] Colour)
         return . fmap F $ c
-      (Just 8) -> do
-        b <- get :: Reader (Maybe Bool)
+      (Right 8) -> do
+        b <- get :: Reader (Either [String] Bool)
         return . fmap G $ b
-      _      -> return Nothing
+      _      -> return $ Left ["Invalid gene sequence"]
 
 --
 -- In this example, we store three boolean values in a Word8 value
@@ -58,10 +58,10 @@ instance Genetic CustomGene2 where
           y' = (2 *) . fromIntegral . fromEnum $ y :: Word8
           z' = fromIntegral . fromEnum $ z :: Word8
   get = do
-    w <- getRawWord8 :: Reader (Maybe Word8)
-    let x = fmap (flip testBit 2) w :: Maybe Bool
-    let y = fmap (flip testBit 1) w :: Maybe Bool
-    let z = fmap (flip testBit 0) w :: Maybe Bool
+    w <- getRawWord8 :: Reader (Either [String] Word8)
+    let x = fmap (flip testBit 2) w :: Either [String] Bool
+    let y = fmap (flip testBit 1) w :: Either [String] Bool
+    let z = fmap (flip testBit 0) w :: Either [String] Bool
     return $ H <$> x <*> y <*> z
 
 test :: (Eq x, Show x, Genetic x) => x -> IO ()
@@ -71,7 +71,7 @@ test x = do
   putStrLn $ "dna=" ++ show dna
   let x2 = read dna
   putStrLn $ "read: " ++ show x2
-  if x2 == Just x
+  if x2 == Right x
      then putStrLn "SUCCESS"
      else putStrLn "FAILURE"
 

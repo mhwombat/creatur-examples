@@ -640,7 +640,7 @@ Log messages are sent to |chapter10/log/Chapter10.log|.
 unify the types with a ``container'' type (e.g., the |Martian| class).
 \end{itemize}
 
-\chapter{Advanced techniques}
+\chapter{Advanced genomes}
 \label{sec:advanced}.
 
 \input{src/Tutorial/Chapter11/Example.tex}
@@ -648,6 +648,49 @@ unify the types with a ``container'' type (e.g., the |Martian| class).
 \chapter{FAQ}
 
 Frequently Anticipated Questions
+
+Q: What is the structure of the universe directory?
+
+A: See the example below.
+
+\begin{code}
+chapter9
+chapter9/db
+chapter9/db/Flo            -- contains the agent named ``Flo''
+chapter9/db/Bugsy          -- contains the agent named ``Bugsy''
+chapter9/db/Chapter9_16    -- contains the agent named ``Chapter9_16''
+. . .
+chapter9/namer             -- contains a counter for generating names
+chapter9/log
+chapter9/log/Chapter9.log  -- the current log file
+                           -- there may be older log files as well
+chapter9/log/Chapter9.exp  -- contains a counter for log rotation
+chapter9/clock             -- contains the current ``universe'' time
+\end{code}
+
+Q: How can I write tools (apart from the daemon) that operate on the agents.
+
+A: See \path{Tutorial/Chapter9/Examine.hs} for an example of a simple analysis tool.
+That program uses |agentIds| and |getAgent| to read the agents from the
+population, without modifying them.
+You can also work with agents that have ``died'' and been archived,
+using |archivedAgentIds| and |getAgentFromArchive|.
+
+Alternatively, you can read the agent files directly, as shown below.
+Be careful not to modify a file while the daemon is running.
+
+\begin{code}
+ghci> :l Tutorial.Chapter9.Bug
+[1 of 1] Compiling Tutorial.Chapter9.Bug ( src/Tutorial/Chapter9/Bug.hs, interpreted )
+Ok, modules loaded: Tutorial.Chapter9.Bug.
+ghci> import Data.Serialize
+ghci> import Data.ByteString
+ghci> x <- BS.readFile "chapter9/db/Bugsy"
+ghci> let b = decode x :: Either String Bug
+ghci> b
+Right (Bug {bugName = "Bugsy", bugColour = Green, bugSpots = [], bugSex = Female,
+bugEnergy = 6, bugGenome = ([False,True,False,True,False],[True,True,True,False])})
+\end{code}
 
 Q: What causes this (or a similar) error message?
 \begin{code}

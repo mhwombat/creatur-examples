@@ -51,12 +51,12 @@ instance Serialize Sex
 instance Genetic Sex
 instance Diploid Sex
 
-buildBug :: String -> DiploidReader (Maybe Bug)
+buildBug :: String -> DiploidReader (Either [String] Bug)
 buildBug name = do
   g <- copy2
   sex <- getAndExpressWithDefault Female
   colour <- getAndExpressWithDefault Green
-  return . Just $ Bug name colour sex 10 g
+  return . Right $ Bug name colour sex 10 g
 
 instance Reproductive Bug where
   type Base Bug = Sequence
@@ -73,7 +73,7 @@ run (me:other:_) = do
   if bugSex me == Female && bugSex other == Male
     then do
       name <- genName
-      (Just baby) <- liftIO $ evalRandIO (makeOffspring me other name)
+      (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)
       writeToLog $ 
         bugName me ++ " and " ++ bugName other ++
           " gave birth to " ++ name ++ ", a " ++ 

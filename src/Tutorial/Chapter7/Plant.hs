@@ -41,11 +41,11 @@ data FlowerColour = Red | Orange | Yellow | Violet | Blue
 instance Serialize FlowerColour
 instance Genetic FlowerColour
 
-buildPlant :: String -> Reader (Maybe Plant)
+buildPlant :: String -> Reader (Either [String] Plant)
 buildPlant name = do
   g <- copy
   colour <- getWithDefault Red
-  return . Just $ Plant name colour 10 g
+  return . Right $ Plant name colour 10 g
 
 instance Reproductive Plant where
   type Base Plant = Sequence
@@ -59,7 +59,7 @@ instance Reproductive Plant where
 run :: [Plant] -> StateT (SimpleUniverse Plant) IO [Plant]
 run (me:other:_) = do
   name <- genName
-  (Just baby) <- liftIO $ evalRandIO (makeOffspring me other name)
+  (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)
   writeToLog $ 
     plantName me ++ " and " ++ plantName other ++
       " gave birth to " ++ name ++ ", with " ++ 

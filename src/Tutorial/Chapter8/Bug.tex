@@ -87,12 +87,12 @@ For convenience, we'll use the |getAndExpressWithDefault| method instead,
 supplying a default sex and colour.
 All bugs start life with 10 units of energy.
 \begin{code}
-buildBug :: String -> DiploidReader (Maybe Bug)
+buildBug :: String -> DiploidReader (Either [String] Bug)
 buildBug name = do
   g <- copy2
   sex <- getAndExpressWithDefault Female
   colour <- getAndExpressWithDefault Green
-  return . Just $ Bug name colour sex 10 g
+  return . Right $ Bug name colour sex 10 g
 \end{code}
 
 Next, we need a way to mate two bugs and produce some offspring.
@@ -150,7 +150,7 @@ run (me:other:_) = do
   if bugSex me == Female && bugSex other == Male
     then do
       name <- genName
-      (Just baby) <- liftIO $ evalRandIO (makeOffspring me other name)
+      (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)
       writeToLog $ 
         bugName me ++ " and " ++ bugName other ++
           " gave birth to " ++ name ++ ", a " ++ 

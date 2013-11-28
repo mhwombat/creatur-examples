@@ -6,7 +6,7 @@ import ALife.Creatur (Agent, agentId, isAlive)
 import ALife.Creatur.AgentNamer (genName)
 import ALife.Creatur.Database (Record, key)
 import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Reader, Sequence,
-  getWithDefault, runReader, copy)
+  getWithDefault, runReader, copy, consumed)
 import ALife.Creatur.Genetics.Recombination (mutatePairedLists, 
   randomCrossover, randomCutAndSplice, randomOneOfPair, withProbability)
 import ALife.Creatur.Genetics.Reproduction.Asexual (Reproductive, Base, 
@@ -40,11 +40,11 @@ data FlowerColour = Red | Orange | Yellow | Violet | Blue
 instance Serialize FlowerColour
 instance Genetic FlowerColour
 
-buildPlant :: String -> Reader (Maybe Plant)
-buildPlant name = do
-  g <- copy
+buildPlant :: Bool -> String -> Reader (Either [String] Plant)
+buildPlant truncateGenome name = do
   colour <- getWithDefault Red
-  return . Just $ Plant name colour 10 g
+  g <- if truncateGenome then consumed else copy
+  return . Right $ Plant name colour 10 g
 
 instance Reproductive Plant where
   type Base Plant = Sequence
@@ -53,13 +53,12 @@ instance Reproductive Plant where
     withProbability 0.01 randomCutAndSplice >>=
     withProbability 0.001 mutatePairedLists >>=
     randomOneOfPair
-  build name = runReader (buildPlant name)
-
+  build name = runReader (buildPlant False name)
 
 tryMating :: [Plant] -> StateT (SimpleUniverse a) IO [Plant]
 tryMating (me:other:_) = do
   name <- genName
-  (Just baby) <- liftIO $ evalRandIO (makeOffspring me other name)
+  (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)
   writeToLog $ 
     plantName me ++ " and " ++ plantName other ++
       " gave birth to " ++ name ++ ", with " ++ 

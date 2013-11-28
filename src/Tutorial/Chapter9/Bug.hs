@@ -53,7 +53,7 @@ instance Serialize Sex
 instance Genetic Sex
 instance Diploid Sex
 
-buildBug :: Bool -> String -> DiploidReader (Maybe Bug)
+buildBug :: Bool -> String -> DiploidReader (Either [String] Bug)
 buildBug truncateGenome name = do
   sex <- getAndExpress
   colour <- getAndExpress
@@ -76,7 +76,7 @@ run (me:other:_) = do
   if bugSex me == Female && bugSex other == Male
     then do
       name <- genName
-      (Just baby) <- liftIO $ evalRandIO (makeOffspring me other name)
+      (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)
       writeToLog $ 
         bugName me ++ " and " ++ bugName other ++
           " gave birth to " ++ name ++ ", a " ++ 
@@ -90,5 +90,4 @@ run x = return x -- need two agents to mate
 
 deductMatingEnergy :: Bug -> Bug
 deductMatingEnergy bug = bug {bugEnergy=bugEnergy bug - 1}
-
 

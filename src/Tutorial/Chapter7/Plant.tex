@@ -96,7 +96,7 @@ buildPlant :: String -> Reader (Maybe Plant)
 buildPlant name = do
   g <- copy
   colour <- getWithDefault Red
-  return . Just $ Plant name colour 10 g
+  return . Right $ Plant name colour 10 g
 \end{code} 
 
 We need a way to mate two plants and produce some offspring.
@@ -158,7 +158,7 @@ to represent the energy cost of reproduction
 run :: [Plant] -> StateT (SimpleUniverse Plant) IO [Plant]
 run (me:other:_) = do
   name <- genName
-  (Just baby) <- liftIO $ evalRandIO (makeOffspring me other name)
+  (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)
   writeToLog $ 
     plantName me ++ " and " ++ plantName other ++
       " gave birth to " ++ name ++ ", with " ++ 

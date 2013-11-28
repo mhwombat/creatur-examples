@@ -7,7 +7,7 @@ import ALife.Creatur.AgentNamer (genName)
 import ALife.Creatur.Database (Record, key)
 import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Sequence,
   DiploidSequence, DiploidReader, getAndExpress, runDiploidReader,
-  copy2)
+  copy2, consumed2)
 import ALife.Creatur.Genetics.Diploid (Diploid)
 import ALife.Creatur.Genetics.Recombination (mutatePairedLists, 
   randomCrossover, randomCutAndSplice, randomOneOfPair, 
@@ -21,13 +21,13 @@ import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Random (evalRandIO)
 import Control.Monad.State (StateT)
 import Data.Serialize (Serialize)
-
 import GHC.Generics (Generic)
 
 data Bug = Bug
   { 
     bugName :: String,
     bugColour :: BugColour,
+    bugSpots :: [BugColour],
     bugSex :: Sex,
     bugEnergy :: Int,
     bugGenome :: DiploidSequence
@@ -41,7 +41,7 @@ instance Agent Bug where
 
 instance Record Bug where key = agentId
 
-data BugColour = Green | Purple
+data BugColour = Green | Purple | Red | Brown | Orange | Pink | Blue
   deriving (Show, Eq, Enum, Bounded, Generic)
 instance Serialize BugColour
 instance Genetic BugColour
@@ -53,12 +53,13 @@ instance Serialize Sex
 instance Genetic Sex
 instance Diploid Sex
 
-buildBug :: String -> DiploidReader (Maybe Bug)
-buildBug name = do
-  g <- copy2
+buildBug :: Bool -> String -> DiploidReader (Either [String] Bug)
+buildBug truncateGenome name = do
   sex <- getAndExpress
   colour <- getAndExpress
-  return $ Bug name <$> colour <*> sex <*> pure 10 <*> pure g
+  spots <- getAndExpress
+  g <- if truncateGenome then consumed2 else copy2
+  return $ Bug name <$> sex <*> colour <*> spots <*> pure 10 <*> pure g
 
 instance Reproductive Bug where
   type Base Bug = Sequence
@@ -67,7 +68,7 @@ instance Reproductive Bug where
     withProbability 0.01 randomCutAndSplice >>=
     withProbability 0.001 mutatePairedLists >>=
     randomOneOfPair
-  build name = runDiploidReader (buildBug name)
+  build name = runDiploidReader (buildBug False name)
 
 tryMating :: [Bug] -> StateT (SimpleUniverse a) IO [Bug]
 tryMating (me:other:_) = do
@@ -76,7 +77,7 @@ tryMating (me:other:_) = do
   if bugSex me == Female && bugSex other == Male
     then do
       name <- genName
-      (Just baby) <- liftIO $ evalRandIO (makeOffspring me other name)
+      (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)
       writeToLog $ 
         bugName me ++ " and " ++ bugName other ++
           " gave birth to " ++ name ++ ", a " ++ 

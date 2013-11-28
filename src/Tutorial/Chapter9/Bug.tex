@@ -47,7 +47,7 @@ Another change is that we used |getAndExpress| instead of
 If the genome is invalid, |buildBug| will return |Nothing|.
 
 \begin{code}
-buildBug :: Bool -> String -> DiploidReader (Maybe Bug)
+buildBug :: Bool -> String -> DiploidReader (Either [String] Bug)
 buildBug truncateGenome name = do
   sex <- getAndExpress
   colour <- getAndExpress
