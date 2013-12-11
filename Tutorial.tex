@@ -60,7 +60,15 @@ modules useful.
 \chapter{Getting started}
 \label{sec:install}
 
-The instructions below should work on Linux, Windows, or OSX.
+NOTE: Créatúr uses the |hmatix| package, which requires the ``dev'' versions of the 
+GSL and BLAS/LAPACK libraries.
+On a Debian system, you can install these libraries with the command:
+
+|apt-get install libgsl0-dev liblapack-dev libblas-dev|.
+\bigskip
+
+The instructions below should work on Linux or OSX.
+(Créatúr uses the |unix| package in order to implement the daemon.)
 
 \begin{enumerate}
 \item Make sure you've installed the Haskell platform. You can get it from
