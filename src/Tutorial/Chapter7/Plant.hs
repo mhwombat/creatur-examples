@@ -3,7 +3,6 @@ module Tutorial.Chapter7.Plant (Plant(..), FlowerColour(..),
   buildPlant, run) where
 
 import ALife.Creatur (Agent, agentId, isAlive)
-import ALife.Creatur.AgentNamer (genName)
 import ALife.Creatur.Database (Record, key)
 import ALife.Creatur.Genetics.BRGCBool (Genetic, Reader, Sequence,
   getWithDefault, runReader, copy)
@@ -11,8 +10,7 @@ import ALife.Creatur.Genetics.Recombination (mutatePairedLists,
   randomCrossover, randomCutAndSplice, randomOneOfPair, withProbability)
 import ALife.Creatur.Genetics.Reproduction.Asexual (Reproductive, Base, 
   recombine, build, makeOffspring)
-import ALife.Creatur.Universe (SimpleUniverse)
-import ALife.Creatur.Logger (writeToLog)
+import ALife.Creatur.Universe (SimpleUniverse, genName, writeToLog)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Random (evalRandIO)
 import Control.Monad.State (StateT)
@@ -68,7 +66,7 @@ run (me:other:_) = do
   writeToLog $ "Mate: " ++ show other
   writeToLog $ "Baby: " ++ show baby
   return [deductMatingEnergy me, deductMatingEnergy other, baby]
-run x = return x -- need two agents to mate
+run _ = return [] -- need two agents to mate
 
 deductMatingEnergy :: Plant -> Plant
 deductMatingEnergy p = p {plantEnergy=plantEnergy p - 1}

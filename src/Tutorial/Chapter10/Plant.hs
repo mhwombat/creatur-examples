@@ -3,7 +3,6 @@ module Tutorial.Chapter10.Plant (Plant(..), FlowerColour(..),
   buildPlant, tryMating) where
 
 import ALife.Creatur (Agent, agentId, isAlive)
-import ALife.Creatur.AgentNamer (genName)
 import ALife.Creatur.Database (Record, key)
 import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Reader, Sequence,
   getWithDefault, runReader, copy, consumed)
@@ -11,8 +10,7 @@ import ALife.Creatur.Genetics.Recombination (mutatePairedLists,
   randomCrossover, randomCutAndSplice, randomOneOfPair, withProbability)
 import ALife.Creatur.Genetics.Reproduction.Asexual (Reproductive, Base, 
   recombine, build, makeOffspring)
-import ALife.Creatur.Logger (writeToLog)
-import ALife.Creatur.Universe (SimpleUniverse)
+import ALife.Creatur.Universe (SimpleUniverse, genName, writeToLog)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Random (evalRandIO)
 import Control.Monad.State (StateT)
@@ -55,7 +53,9 @@ instance Reproductive Plant where
     randomOneOfPair
   build name = runReader (buildPlant False name)
 
-tryMating :: [Plant] -> StateT (SimpleUniverse a) IO [Plant]
+tryMating 
+  :: (Agent a, Serialize a) 
+    => [Plant] -> StateT (SimpleUniverse a) IO [Plant]
 tryMating (me:other:_) = do
   name <- genName
   (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)

@@ -144,7 +144,7 @@ If mating occurs, we deduct one unit of energy.
 If mating does not occur, then no agents have been modified so we return an empty list.
 
 \begin{code}
-run :: [Bug] -> StateT (SimpleUniverse a) IO [Bug]
+run :: [Bug] -> StateT (SimpleUniverse Bug) IO [Bug]
 run (me:other:_) = do
   writeToLog $ agentId me ++ "'s turn" 
   if bugSex me == Female && bugSex other == Male
@@ -157,7 +157,7 @@ run (me:other:_) = do
           show (bugColour baby) ++ " " ++ show (bugSex baby) ++ " bug"
       return [deductMatingEnergy me, deductMatingEnergy other, baby]
     else return []
-run x = return x -- need two agents to mate
+run _ = return [] -- need two agents to mate
 
 deductMatingEnergy :: Bug -> Bug
 deductMatingEnergy bug = bug {bugEnergy=bugEnergy bug - 1}

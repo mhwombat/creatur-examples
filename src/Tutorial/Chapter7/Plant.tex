@@ -92,7 +92,7 @@ We'll see an example of that in Section \ref{sec:species4}.
 All plants start life with an energy of |10|.
         
 \begin{code}
-buildPlant :: String -> Reader (Maybe Plant)
+buildPlant :: String -> Reader (Either [String] Plant)
 buildPlant name = do
   g <- copy
   colour <- getWithDefault Red
@@ -136,8 +136,7 @@ rocks.
 The type signature we need is
 
 \begin{code}
-type AgentsProgram c l d n x a = 
-  [a] -> StateT (Universe c l d n x a) IO [a]
+type AgentsProgram u = [Agent u] -> StateT u IO [Agent u]
 \end{code} 
 
 The input parameter is a list of agents. 
@@ -164,7 +163,7 @@ run (me:other:_) = do
       " gave birth to " ++ name ++ ", with " ++ 
        show (plantFlowerColour baby) ++ " flowers"
   return [deductMatingEnergy me, deductMatingEnergy other, baby]
-run x = return x -- need two agents to mate
+run _ = return [] -- need two agents to mate
 \end{code}
 
 The complete code listing is below.

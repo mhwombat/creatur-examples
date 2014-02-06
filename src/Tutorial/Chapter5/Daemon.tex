@@ -8,22 +8,18 @@ which reduces the amount of code you need to write.
 The simplest task has the type signature:
 
 \begin{code}
-runNoninteractingAgents :: (Clock c, Logger l, Database d, Agent a, 
-    Serialize a, Record a, a ~ DBRecord d) =>
-  AgentProgram c l d n x a -> StateT (Universe c l d n x a) IO ()
+runNoninteractingAgents
+  :: (Universe u, Serialize (Agent u))
+    => AgentProgram u -> SummaryProgram u -> StateT u IO ()
 \end{code}
 
 That signature looks complex, but essentially it means that if you
 supply an |AgentProgram|, it will run it for you.
-Your |AgentProgram| will run in a universe that implements
-\path{ALife.Creatur.AgentNamer},
-\path{ALife.Creatur.Clock}, and
-\path{ALife.Creatur.Logger}.
 So what type signature must your |AgentProgram| have?
 Here's the definition.
 
 \begin{code}
-type AgentProgram c l d n x a = a -> StateT (Universe c l d n x a) IO a
+type AgentProgram u = Agent u -> StateT u IO (Agent u)
 \end{code}
 
 This is the signature for an agent that doesn't interact with other
@@ -40,7 +36,7 @@ run :: Rock -> StateT (SimpleUniverse a) IO Rock
 \end{code}
 
 |SimpleUniverse a| provides the logging, clock, and agent naming
-functionality we need, and satisfies |Universe c l d n x a|.
+functionality we need.
 So the type signature of |run| is consistent with |AgentProgram|.
 The program below configures and launches the daemon.
 

@@ -68,7 +68,7 @@ We'll see a more typical implementation in Section
 \ref{sec:species2}.
 
 \begin{code}
-run :: Rock -> StateT (SimpleUniverse a) IO Rock
+run :: Rock -> StateT (SimpleUniverse Rock) IO Rock
 run (Rock name k) = do
   writeToLog $ name ++ "'s turn. counter=" ++ show k 
   return $ Rock name (k+1)

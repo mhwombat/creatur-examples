@@ -3,7 +3,6 @@ module Tutorial.Chapter8.Bug (Bug(..), Sex(..), BugColour(..),
   buildBug, run) where
 
 import ALife.Creatur (Agent, agentId, isAlive)
-import ALife.Creatur.AgentNamer (genName)
 import ALife.Creatur.Database (Record, key)
 import ALife.Creatur.Genetics.BRGCBool (Genetic, Sequence,
   DiploidSequence, DiploidReader, getAndExpressWithDefault,
@@ -14,8 +13,7 @@ import ALife.Creatur.Genetics.Recombination (mutatePairedLists,
   repeatWithProbability, withProbability)
 import ALife.Creatur.Genetics.Reproduction.Sexual (Reproductive, Base, 
   produceGamete, build, makeOffspring)
-import ALife.Creatur.Universe (SimpleUniverse)
-import ALife.Creatur.Logger (writeToLog)
+import ALife.Creatur.Universe (SimpleUniverse, genName, writeToLog)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Random (evalRandIO)
 import Control.Monad.State (StateT)
@@ -67,7 +65,7 @@ instance Reproductive Bug where
     randomOneOfPair
   build name = runDiploidReader (buildBug name)
 
-run :: [Bug] -> StateT (SimpleUniverse a) IO [Bug]
+run :: [Bug] -> StateT (SimpleUniverse Bug) IO [Bug]
 run (me:other:_) = do
   writeToLog $ agentId me ++ "'s turn" 
   if bugSex me == Female && bugSex other == Male
@@ -83,7 +81,7 @@ run (me:other:_) = do
       writeToLog $ "Baby: " ++ show baby
       return [deductMatingEnergy me, deductMatingEnergy other, baby]
     else return []
-run x = return x -- need two agents to mate
+run _ = return [] -- need two agents to mate
 
 deductMatingEnergy :: Bug -> Bug
 deductMatingEnergy bug = bug {bugEnergy=bugEnergy bug - 1}

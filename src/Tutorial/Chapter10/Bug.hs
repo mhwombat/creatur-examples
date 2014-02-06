@@ -3,7 +3,6 @@ module Tutorial.Chapter10.Bug (Bug(..), Sex(..), BugColour(..),
   buildBug, tryMating) where
 
 import ALife.Creatur (Agent, agentId, isAlive)
-import ALife.Creatur.AgentNamer (genName)
 import ALife.Creatur.Database (Record, key)
 import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Sequence,
   DiploidSequence, DiploidReader, getAndExpress, runDiploidReader,
@@ -14,8 +13,7 @@ import ALife.Creatur.Genetics.Recombination (mutatePairedLists,
   repeatWithProbability, withProbability)
 import ALife.Creatur.Genetics.Reproduction.Sexual (Reproductive, Base, 
   produceGamete, build, makeOffspring)
-import ALife.Creatur.Logger (writeToLog)
-import ALife.Creatur.Universe (SimpleUniverse)
+import ALife.Creatur.Universe (SimpleUniverse, genName, writeToLog)
 import Control.Applicative ((<$>), (<*>), pure)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Random (evalRandIO)
@@ -70,7 +68,9 @@ instance Reproductive Bug where
     randomOneOfPair
   build name = runDiploidReader (buildBug False name)
 
-tryMating :: [Bug] -> StateT (SimpleUniverse a) IO [Bug]
+tryMating 
+  :: (Agent a, Serialize a) 
+    => [Bug] -> StateT (SimpleUniverse a) IO [Bug]
 tryMating (me:other:_) = do
   writeToLog $ bugName me ++ ", a " ++ show (bugSex me) ++ " bug, sees "
     ++ bugName other ++ ", a " ++ show (bugSex other)
