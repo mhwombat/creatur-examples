@@ -10,6 +10,6 @@ import System.Directory (canonicalizePath)
 main :: IO ()
 main = do
   dir <- canonicalizePath "chapter5" -- Required for daemon
-  let u = mkSimpleUniverse "Chapter5" dir 100000
+  let u = mkSimpleUniverse "Chapter5" dir
   launch simpleDaemon{task=runNoninteractingAgents run noSummary} u
 

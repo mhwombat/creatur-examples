@@ -100,7 +100,7 @@ We can do this by implementing the |Reproductive| class in
 \path{ALife.Creatur.Genetics.Reproduction.Sexual}.
 This class requires us to implement the following:
 \begin{enumerate}
-\item A type called |Base|, which specifies the type used to encode
+\item A type called |Strand|, which specifies the type used for encoded
 genes for this species. Recall that we've used |Bool|s for this purpose.
 \item A method called |produceGamete| which shuffles (and maybe mutates)
 the two sequences of genes from one parent, 
@@ -114,7 +114,7 @@ and pass it to |runReader|.
 
 \begin{code}
 instance Reproductive Bug where
-  type Base Bug = Sequence
+  type Strand Bug = Sequence
   produceGamete a = 
     repeatWithProbability 0.1 randomCrossover (bugGenome a) >>=
     withProbability 0.01 randomCutAndSplice >>=

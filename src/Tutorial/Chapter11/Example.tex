@@ -1,6 +1,6 @@
 In the previous chapters, we developed agents with very simple genes.
 However, genes can be arbitrarily complex.
-The default implementation of |Gene| is usually sufficient,
+The default implementation of |Genetic| is usually sufficient,
 as in the following example.
 
 \begin{code}
@@ -10,11 +10,11 @@ data ComplexGene = A | B Colour | C Word8 | D Bool Char | E [ComplexGene]
 instance Genetic ComplexGene
 \end{code}
 
-You are not restricted to using the default implementation of |Gene|.
+You are not restricted to using the default implementation of |Genetic|.
 In the following example, we write a custom implementation.
 You can mix custom and default implementations;
-the implementation of |Gene| for |CustomGene|
-uses the default implementation of |Gene| for |Colour|.
+the implementation of |Genetic| for |CustomGene|
+uses the default implementation of |Genetic| for |Colour|.
 
 \begin{code}
 data CustomGene = F Colour | G Bool
@@ -35,7 +35,7 @@ instance Genetic CustomGene where
       _      -> return $ Left ["Invalid gene sequence"]
 \end{code}
 
-One reason you might want to write a custom implementation of |Gene|
+One reason you might want to write a custom implementation of |Genetic|
 is for efficiency.
 In this example, we store three boolean values in a Word8 value
 to reduce the amount of storage required.

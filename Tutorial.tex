@@ -141,7 +141,7 @@ to use the CPU by invoking a user-supplied function.
 A different random order is used at each clock tick
 so that no agent has an unfair advantage.
 (If agents were always processed in the same order, 
-agents near the end of the list might, for example, find that that the 
+agents near the end of the list might, for example, find that the 
 best food has already been eaten or that the desirable mating
 partners are already taken.)
 
@@ -187,7 +187,7 @@ The procedure for running this program will be described in Section
 
 
 Here is the listing of |creatur-examples.cabal|.
-\verbatiminput{creatur-examples.cabal}
+\VerbatimInput{creatur-examples.cabal}[frame=single, rulecolor=\color{frame_color}]
 
 \begin{enumerate}
 \item If you haven't already done so, follow the instructions in Chapter
@@ -202,19 +202,14 @@ Log messages are sent to |chapter5/log/Chapter5.log|.
 Examine that file and notice that the counter is counting up for both rocks.
 If you stop the daemon and restart it, it will pick up where it left off
 \footnote{When the stop command is received, the daemon will attempt
-to finish the processing for the current clock tick.
-Depending on the processor speed and the number of agents in the population,
+to finish the processing for the current agent.
+Depending on the processor speed and the complexity of the agent task,
 it may not finish before the hard kill which is issued three seconds later.
 The database or file system is not updated until an agent's turn at the CPU 
 is complete, so any partial results are discarded.
 If the daemon terminates while an agent is running,
-the effect is that the current agent, and all others after it in the queue,
-miss their turn at the CPU.
-However, even frequent restarting of the daemon
-is unlikely to cause CPU starvation for any particular agent.
-The random order in which agents are processed spreads the impact
-over the population.}, preserving the value of the 
-counter between runs.
+it ``remembers'' the state of the queue;
+that agent's turn will start over when the daemon is restarted.}
 
 A sample extract from the log file is shown below.
 The first field is the system clock time.
@@ -254,7 +249,7 @@ for more detailed information about the API.
 \chapter{Recombination}
 \label{sec:recombination}
 
-When agents that reproduce, the offspring will inherit a mixture of
+When agents reproduce, the offspring will inherit a mixture of
 genetic information from both parents.
 Here are two scenarios that could be used, although there are other
 possibilities.
@@ -372,11 +367,12 @@ Other recombination operators are also available.
 Consult the documentation of \path{ALife.Creatur.Genetics.Recombination}
 for more information.
 
-\chapter{Asexual reproduction}
+\chapter{Simplified sexual reproduction}
 \label{sec:plant}
 
-In this part of the tutorial, we create a species with the
-ability to reproduce asexually.
+In this part of the tutorial, we create a species with a
+greatly simplified form of sexual reproduction that is often
+used in artificial life and genetic programming
 
 \section{Create a species}
 \label{sec:species2}

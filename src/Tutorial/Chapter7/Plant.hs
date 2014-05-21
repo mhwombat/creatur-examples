@@ -8,8 +8,8 @@ import ALife.Creatur.Genetics.BRGCBool (Genetic, Reader, Sequence,
   getWithDefault, runReader, copy)
 import ALife.Creatur.Genetics.Recombination (mutatePairedLists, 
   randomCrossover, randomCutAndSplice, randomOneOfPair, withProbability)
-import ALife.Creatur.Genetics.Reproduction.Asexual (Reproductive, Base, 
-  recombine, build, makeOffspring)
+import ALife.Creatur.Genetics.Reproduction.SimplifiedSexual
+  (Reproductive, Strand, recombine, build, makeOffspring)
 import ALife.Creatur.Universe (SimpleUniverse, genName, writeToLog)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Random (evalRandIO)
@@ -46,7 +46,7 @@ buildPlant name = do
   return . Right $ Plant name colour 10 g
 
 instance Reproductive Plant where
-  type Base Plant = Sequence
+  type Strand Plant = Sequence
   recombine a b = 
     withProbability 0.1 randomCrossover (plantGenome a, plantGenome b) >>=
     withProbability 0.01 randomCutAndSplice >>=

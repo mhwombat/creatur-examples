@@ -46,10 +46,10 @@ We need a way to encode the plant genes into DNA-like sequences that can
 be shuffled, or even mutated, during reproduction.
 We'll encode the genes as sequences of |Bool|s.
 We could write our own coding scheme, but \path{ALife.Creatur.Genetics.Code.BRGCBool}
-provides a scheme for us, using a class called |Gene|.
-The |Gene| class provides the method |put|, which encodes a gene and writes it to a sequence,
+provides a scheme for us, using a class called |Genetic|.
+The |Genetic| class provides the method |put|, which encodes a gene and writes it to a sequence,
 and the method |get|, which reads and decodes the first gene in a sequence.
-By making |FlowerColour| an instance of |Gene|, 
+By making |FlowerColour| an instance of |Genetic|, 
 |FlowerColour| will be encoded as a string of boolean values using a \emph{Gray code}.
 A Gray code maps values to codes in a way that guarantees that the codes
 for two consecutive values will differ by only one bit. This feature
@@ -79,7 +79,7 @@ To support reproduction, we need a way to build a plant from its genome.
 First, each plant needs a copy of its genome in order to produce offspring;
 we'll use the |copy| method to obtain this.
 Next, we determine the colour of the bug.
-We could use the method |get| in the class |Gene|, 
+We could use the method |get| in the class |Genetic|, 
 which returns a |Maybe| value containing the next gene in a sequence.
 However, our sequence of |Bool|s may not
 be a valid code for a colour, in which case the call to |get|
@@ -101,7 +101,8 @@ buildPlant name = do
 
 We need a way to mate two plants and produce some offspring.
 We can do this by implementing the |Reproductive| class in 
-\path{ALife.Creatur.Genetics.Reproduction.Asexual}.
+\path{ALife.Creatur.Genetics.Reproduction.SimplifiedSexual}.
+(In reality, plants use a variety of reproduction methods.)
 This class requires us to implement the following:
 \begin{enumerate}
 \item A type called |Base|, which specifies the type used to encode
@@ -115,7 +116,7 @@ supplying the |buildPlant| method as an argument.
 
 \begin{code}
 instance Reproductive Plant where
-  type Base Plant = Sequence
+  type Strand Plant = Sequence
   recombine a b = 
     withProbability 0.1 randomCrossover (plantGenome a, plantGenome b) >>=
     withProbability 0.01 randomCutAndSplice >>=

@@ -1,5 +1,5 @@
 import Tutorial.Chapter9.Bug (Bug, buildBug)
-import ALife.Creatur.Universe (addAgent, mkSimpleUniverse)
+import ALife.Creatur.Universe (store, mkSimpleUniverse)
 import ALife.Creatur.Genetics.BRGCBool (DiploidReader,
   runDiploidReader)
 import Control.Monad.State.Lazy (evalStateT)
@@ -13,7 +13,7 @@ buildBugs names = do
 
 main :: IO ()
 main = do
-  let u = mkSimpleUniverse "Chapter9" "chapter9" 100000
+  let u = mkSimpleUniverse "Chapter9" "chapter9"
 
   -- Create some Bugs and save them in the population directory.
   let names = ["Bugsy", "Mel", "Flo", "Buzz"]
@@ -25,5 +25,5 @@ main = do
   let g2 = randoms r2
 
   let agents = runDiploidReader (buildBugs names) (g1, g2)
-  mapM_ (\b -> evalStateT (addAgent b) u) agents
+  mapM_ (\b -> evalStateT (store b) u) agents
 

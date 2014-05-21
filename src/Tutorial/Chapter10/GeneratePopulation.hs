@@ -4,7 +4,7 @@ import Tutorial.Chapter10.Bug (buildBug)
 import Tutorial.Chapter10.Martian (Martian(..))
 import ALife.Creatur.Genetics.BRGCWord8 (Reader, DiploidReader, 
   runReader, runDiploidReader)
-import ALife.Creatur.Universe (addAgent, mkSimpleUniverse)
+import ALife.Creatur.Universe (store, mkSimpleUniverse)
 import Data.Either (rights)
 import Control.Monad.State.Lazy (evalStateT)
 import System.Random (getStdGen, newStdGen, randoms)
@@ -22,14 +22,14 @@ buildBugs names = do
 
 main :: IO ()
 main = do
-  let u = mkSimpleUniverse "Chapter10" "chapter10" 100000
+  let u = mkSimpleUniverse "Chapter10" "chapter10"
 
   -- Create some rocks and save them in the population directory.
   let rock1 = FromRock $ Rock "Rocky" 0
-  evalStateT (addAgent rock1) u
+  evalStateT (store rock1) u
 
   let rock2 = FromRock $ Rock "Roxie" 0
-  evalStateT (addAgent rock2) u
+  evalStateT (store rock2) u
 
   -- Create some plants and save them in the population directory.
   let plantNames = ["Rose", "Sunny", "Vi"]
@@ -38,7 +38,7 @@ main = do
   let g = randoms r
 
   let plants = runReader (buildPlants plantNames) g
-  mapM_ (\b -> evalStateT (addAgent b) u) plants
+  mapM_ (\b -> evalStateT (store b) u) plants
 
   -- Create some Bugs and save them in the population directory.
   let bugNames = ["Bugsy", "Mel", "Flo", "Buzz"]
@@ -50,5 +50,5 @@ main = do
   let g2 = randoms r2
   
   let bugs = runDiploidReader (buildBugs bugNames) (g1, g2)
-  mapM_ (\b -> evalStateT (addAgent b) u) bugs
+  mapM_ (\b -> evalStateT (store b) u) bugs
 

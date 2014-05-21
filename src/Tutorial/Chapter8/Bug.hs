@@ -11,7 +11,7 @@ import ALife.Creatur.Genetics.Diploid (Diploid)
 import ALife.Creatur.Genetics.Recombination (mutatePairedLists, 
   randomCrossover, randomCutAndSplice, randomOneOfPair, 
   repeatWithProbability, withProbability)
-import ALife.Creatur.Genetics.Reproduction.Sexual (Reproductive, Base, 
+import ALife.Creatur.Genetics.Reproduction.Sexual (Reproductive, Strand, 
   produceGamete, build, makeOffspring)
 import ALife.Creatur.Universe (SimpleUniverse, genName, writeToLog)
 import Control.Monad.IO.Class (liftIO)
@@ -57,7 +57,7 @@ buildBug name = do
   return . Right $ Bug name colour sex 10 g
 
 instance Reproductive Bug where
-  type Base Bug = Sequence
+  type Strand Bug = Sequence
   produceGamete a = 
     repeatWithProbability 0.1 randomCrossover (bugGenome a) >>=
     withProbability 0.01 randomCutAndSplice >>=
