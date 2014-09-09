@@ -1,5 +1,5 @@
 Name:              creatur-examples
-Version:           5.4.2 
+Version:           5.4.2.1
 -- keep in sync with créatúr, update tutorial and dependencies below
 Stability:         experimental
 Description:       Examples demonstrating the use of the \"Créatúr\"
@@ -22,7 +22,7 @@ source-repository head
 source-repository this
   type:     git
   location: https://github.com/mhwombat/creatur-examples.git
-  tag:      5.4.2
+  tag:      5.4.2.1
 
 Executable chapter5-daemon
   Main-Is:          Tutorial/Chapter5/Daemon.hs
