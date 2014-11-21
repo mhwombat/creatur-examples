@@ -40,15 +40,19 @@ main = do
   let plants = runReader (buildPlants plantNames) g
   mapM_ (\b -> evalStateT (store b) u) plants
 
+  -- Note: The next part "hangs" for me. It didn't used to. And the
+  -- same code works in Chapter 9. I haven't had a chance to debug
+  -- the problem yet.
+
   -- Create some Bugs and save them in the population directory.
-  let bugNames = ["Bugsy", "Mel", "Flo", "Buzz"]
+  let names = ["Bugsy", "Mel", "Flo", "Buzz"]
 
   r1 <- newStdGen -- source of random genes
   r2 <- getStdGen -- source of random genes
 
   let g1 = randoms r1
   let g2 = randoms r2
-  
-  let bugs = runDiploidReader (buildBugs bugNames) (g1, g2)
-  mapM_ (\b -> evalStateT (store b) u) bugs
+
+  let agents = runDiploidReader (buildBugs names) (g1, g2)
+  mapM_ (\b -> evalStateT (store b) u) agents
 

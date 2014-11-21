@@ -1,5 +1,5 @@
 Name:              creatur-examples
-Version:           5.4.2.1
+Version:           5.9.0
 -- keep in sync with créatúr, update tutorial and dependencies below
 Stability:         experimental
 Description:       Examples demonstrating the use of the \"Créatúr\"
@@ -9,7 +9,7 @@ License:           BSD3
 License-file:      LICENSE
 Homepage:          https://github.com/mhwombat/creatur-example
 Bug-reports:       https://github.com/mhwombat/creatur-examples/issues
-Copyright:         (c) Amy de Buitléir 2010-2012
+Copyright:         (c) Amy de Buitléir 2010-2014
 Author:            Amy de Buitléir
 Maintainer:        amy@nualeargais.ie
 Build-Type:        Simple
@@ -22,26 +22,26 @@ source-repository head
 source-repository this
   type:     git
   location: https://github.com/mhwombat/creatur-examples.git
-  tag:      5.4.2.1
+  tag:      5.9.0
 
 Executable chapter5-daemon
   Main-Is:          Tutorial/Chapter5/Daemon.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    array ==0.4.* || ==0.5.*,
+  Build-Depends:    array ==0.5.*,
                     base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    hdaemonize ==0.4.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    hdaemonize ==0.5.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
                     split ==0.2.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
-                    unix ==2.6.* || ==2.7.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
                     zlib ==0.5.*
 
 Executable chapter5-init
@@ -49,35 +49,35 @@ Executable chapter5-init
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
+                    transformers ==0.4.*,
                     zlib ==0.5.*
 
 Executable chapter7-daemon
   Main-Is:          Tutorial/Chapter7/Daemon.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    array ==0.4.* || ==0.5.*,
+  Build-Depends:    array ==0.5.*,
                     base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    hdaemonize ==0.4.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    hdaemonize ==0.5.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
                     split ==0.2.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
-                    unix ==2.6.* || ==2.7.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
                     zlib ==0.5.*
 
 Executable chapter7-init
@@ -85,35 +85,35 @@ Executable chapter7-init
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
+                    transformers ==0.4.*,
                     zlib ==0.5.*
 
 Executable chapter8-daemon
   Main-Is:          Tutorial/Chapter8/Daemon.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    array ==0.4.* || ==0.5.*,
+  Build-Depends:    array ==0.5.*,
                     base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    hdaemonize ==0.4.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    hdaemonize ==0.5.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
                     split ==0.2.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
-                    unix ==2.6.* || ==2.7.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
                     zlib ==0.5.*
 
 Executable chapter8-init
@@ -121,35 +121,35 @@ Executable chapter8-init
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
+                    transformers ==0.4.*,
                     zlib ==0.5.*
 
 Executable chapter9-daemon
   Main-Is:          Tutorial/Chapter9/Daemon.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    array ==0.4.* || ==0.5.*,
+  Build-Depends:    array ==0.5.*,
                     base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    hdaemonize ==0.4.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    hdaemonize ==0.5.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
                     split ==0.2.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
-                    unix ==2.6.* || ==2.7.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
                     zlib ==0.5.*
 
 Executable chapter9-init
@@ -157,37 +157,37 @@ Executable chapter9-init
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
-                    random ==1.0.*,
+                    random ==1.1.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
+                    transformers ==0.4.*,
                     zlib ==0.5.*
 
 Executable chapter10-daemon
   Main-Is:          Tutorial/Chapter10/Daemon.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    array ==0.4.* || ==0.5.*,
+  Build-Depends:    array ==0.5.*,
                     base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    hdaemonize ==0.4.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    hdaemonize ==0.5.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
-                    random ==1.0.*,
+                    random ==1.1.*,
                     split ==0.2.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
-                    unix ==2.6.* || ==2.7.*,
+                    transformers ==0.4.*,
+                    unix ==2.7.*,
                     zlib ==0.5.*
 
 Executable chapter10-init
@@ -195,16 +195,16 @@ Executable chapter10-init
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
-                    random ==1.0.*,
+                    random ==1.1.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
+                    transformers ==0.4.*,
                     zlib ==0.5.*
 
 Executable chapter11
@@ -212,14 +212,14 @@ Executable chapter11
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    base ==4.*,
-                    cereal ==0.3.* || ==0.4.*,
-                    creatur ==5.4.2,
+                    cereal ==0.4.*,
+                    creatur ==5.9.0,
                     directory ==1.2.*,
                     ghc-prim ==0.3.*,
-                    MonadRandom ==0.1.*,
-                    mtl ==2.1.*,
+                    MonadRandom ==0.3.*,
+                    mtl ==2.2.*,
                     old-locale ==1.0.*,
                     time ==1.4.*,
-                    transformers ==0.3.*,
+                    transformers ==0.4.*,
                     zlib ==0.5.*
 
