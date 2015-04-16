@@ -60,12 +60,12 @@ modules useful.
 \chapter{Getting started}
 \label{sec:install}
 
-NOTE: Créatúr uses the |hmatix| package, which requires the ``dev'' versions of the 
-GSL and BLAS/LAPACK libraries.
-On a Debian system, you can install these libraries with the command:
+%% NOTE: Créatúr uses the |hmatix| package, which requires the ``dev'' versions of the 
+%% GSL and BLAS/LAPACK libraries.
+%% On a Debian system, you can install these libraries with the command:
 
-|apt-get install libgsl0-dev liblapack-dev libblas-dev|.
-\bigskip
+%% |apt-get install libgsl0-dev liblapack-dev libblas-dev|.
+%% \bigskip
 
 The instructions below should work on Linux or OSX.
 (Créatúr uses the |unix| package in order to implement the daemon.)
@@ -495,42 +495,40 @@ Log messages are sent to |chapter8/log/Chapter8.log|.
 A sample extract from the log file is shown below.
 
 \begin{verbatim}
-130121134119+0000       Starting
-130121134119+0000       0       Zelda just woke up. Energy=10
-130121134119+0000       0       Zelda sees Mel
-130121134119+0000       0       Zelda mated with Mel.
-130121134119+0000       0       Zelda and Mel gave birth to Chapter8_1, a Green Male bug
-130121134119+0000       0       Zelda is going back to sleep. Energy=9
-130121134119+0000       0       Mel just woke up. Energy=10
-130121134119+0000       0       Mel is going back to sleep. Energy=9
-130121134119+0000       0       Betty just woke up. Energy=10
-130121134119+0000       0       Betty sees Bugsy
-130121134119+0000       0       Betty mated with Bugsy.
-130121134119+0000       0       Betty and Bugsy gave birth to Chapter8_2, a Green Male bug
-130121134119+0000       0       Betty is going back to sleep. Energy=9
-130121134119+0000       0       Bugsy just woke up. Energy=10
-130121134119+0000       0       Bugsy is going back to sleep. Energy=9
-130121134119+0000       1       Mel just woke up. Energy=9
-130121134119+0000       1       Mel is going back to sleep. Energy=8
-130121134119+0000       1       Zelda just woke up. Energy=9
-130121134119+0000       1       Zelda sees Chapter8_1
-130121134119+0000       1       Zelda mated with Chapter8_1.
-130121134119+0000       1       Zelda and Chapter8_1 gave birth to Chapter8_3, a Green Male bug
-130121134119+0000       1       Zelda is going back to sleep. Energy=8
-130121134119+0000       1       Betty just woke up. Energy=9
-130121134119+0000       1       Betty sees Zelda
-130121134119+0000       1       Betty is not interested in Zelda.
-130121134119+0000       1       Betty is going back to sleep. Energy=8
-130121134119+0000       1       Chapter8_1 just woke up. Energy=10
-130121134119+0000       1       Chapter8_1 is going back to sleep. Energy=9
-130121134119+0000       1       Chapter8_2 just woke up. Energy=10
-130121134119+0000       1       Chapter8_2 is going back to sleep. Energy=9
-130121134119+0000       1       Bugsy just woke up. Energy=9
-130121134119+0000       1       Bugsy is going back to sleep. Energy=8
-130121134120+0000       2       Chapter8_1 just woke up. Energy=9
-130121134120+0000       2       Chapter8_1 is going back to sleep. Energy=8
-130121134120+0000       2       Bugsy just woke up. Energy=8
-130121134120+0000       2       Bugsy is going back to sleep. Energy=7
+150416183914+0100       0       Starting
+150416183914+0100       1       Beginning of round
+150416183914+0100       1       Bugsy's turn
+150416183914+0100       1       Mel's turn
+150416183914+0100       1       Buzz's turn
+150416183914+0100       1       Flo's turn
+150416183914+0100       1       Flo and Bugsy gave birth to Chapter8_1, a Green Male bug
+150416183914+0100       1       Mother: Bug {bugName = "Flo", bugColour = Green, bugSex = Female,
+bugEnergy = 10, bugGenome = ([False,True],[False,True])}
+150416183914+0100       1       Father: Bug {bugName = "Bugsy", bugColour = Green, bugSex = Male,
+bugEnergy = 10, bugGenome = ([True,True],[True,True])}
+150416183914+0100       1       Baby: Bug {bugName = "Chapter8_1", bugColour = Green, bugSex = Male,
+bugEnergy = 10, bugGenome = ([False,True],[True,True])}
+150416183914+0100       1       Flo returned to population
+150416183914+0100       1       Bugsy returned to population
+150416183914+0100       1       Chapter8_1 added to population
+150416183914+0100       1       End of round
+150416183914+0100       2       Beginning of round
+150416183914+0100       2       Chapter8_1's turn
+150416183914+0100       2       Bugsy's turn
+150416183914+0100       2       Flo's turn
+150416183914+0100       2       Flo and Buzz gave birth to Chapter8_2, a Green Male bug
+150416183914+0100       2       Mother: Bug {bugName = "Flo", bugColour = Green, bugSex = Female,
+bugEnergy = 9, bugGenome = ([False,True],[False,True])}
+150416183914+0100       2       Father: Bug {bugName = "Buzz", bugColour = Purple, bugSex = Male,
+bugEnergy = 10, bugGenome = ([True,False],[True,False])}
+150416183914+0100       2       Baby: Bug {bugName = "Chapter8_2", bugColour = Green, bugSex = Male,
+bugEnergy = 10, bugGenome = ([False,True],[True,False])}
+150416183914+0100       2       Flo returned to population
+150416183914+0100       2       Buzz returned to population
+150416183914+0100       2       Chapter8_2 added to population
+150416183914+0100       2       Buzz's turn
+150416183914+0100       2       Mel's turn
+150416183914+0100       2       End of round
 \end{verbatim}
 
 \section{Key points}
@@ -601,6 +599,7 @@ Thereafter, turn truncation off.
 
 In this part of the tutorial, we create a universe with multiple species,
 where each species is a different Haskell type.
+(They will be wrapped up in a single type via different constructors.)
 
 \section{Create a species}
 \label{sec:species5}

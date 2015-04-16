@@ -1,5 +1,5 @@
 Name:              creatur-examples
-Version:           5.9.0
+Version:           5.9.4
 -- keep in sync with créatúr, update tutorial and dependencies below
 Stability:         experimental
 Description:       Examples demonstrating the use of the \"Créatúr\"
@@ -9,7 +9,7 @@ License:           BSD3
 License-file:      LICENSE
 Homepage:          https://github.com/mhwombat/creatur-example
 Bug-reports:       https://github.com/mhwombat/creatur-examples/issues
-Copyright:         (c) Amy de Buitléir 2010-2014
+Copyright:         (c) Amy de Buitléir 2010-2015
 Author:            Amy de Buitléir
 Maintainer:        amy@nualeargais.ie
 Build-Type:        Simple
@@ -22,24 +22,24 @@ source-repository head
 source-repository this
   type:     git
   location: https://github.com/mhwombat/creatur-examples.git
-  tag:      5.9.0
+  tag:      5.9.4
 
 Executable chapter5-daemon
   Main-Is:          Tutorial/Chapter5/Daemon.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    array ==0.5.*,
-                    base ==4.*,
+                    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     hdaemonize ==0.5.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     split ==0.2.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     unix ==2.7.*,
                     zlib ==0.5.*
@@ -48,15 +48,15 @@ Executable chapter5-init
   Main-Is:          Tutorial/Chapter5/GeneratePopulation.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    base ==4.*,
+  Build-Depends:    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     zlib ==0.5.*
 
@@ -65,17 +65,17 @@ Executable chapter7-daemon
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    array ==0.5.*,
-                    base ==4.*,
+                    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     hdaemonize ==0.5.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     split ==0.2.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     unix ==2.7.*,
                     zlib ==0.5.*
@@ -84,15 +84,15 @@ Executable chapter7-init
   Main-Is:          Tutorial/Chapter7/GeneratePopulation.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    base ==4.*,
+  Build-Depends:    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     zlib ==0.5.*
 
@@ -101,17 +101,17 @@ Executable chapter8-daemon
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    array ==0.5.*,
-                    base ==4.*,
+                    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     hdaemonize ==0.5.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     split ==0.2.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     unix ==2.7.*,
                     zlib ==0.5.*
@@ -120,15 +120,15 @@ Executable chapter8-init
   Main-Is:          Tutorial/Chapter8/GeneratePopulation.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    base ==4.*,
+  Build-Depends:    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     zlib ==0.5.*
 
@@ -137,17 +137,17 @@ Executable chapter9-daemon
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    array ==0.5.*,
-                    base ==4.*,
+                    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     hdaemonize ==0.5.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     split ==0.2.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     unix ==2.7.*,
                     zlib ==0.5.*
@@ -156,16 +156,16 @@ Executable chapter9-init
   Main-Is:          Tutorial/Chapter9/GeneratePopulation.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    base ==4.*,
+  Build-Depends:    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     zlib ==0.5.*
 
@@ -174,18 +174,18 @@ Executable chapter10-daemon
   GHC-Options:      -Wall
   Hs-source-dirs:   src
   Build-Depends:    array ==0.5.*,
-                    base ==4.*,
+                    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     hdaemonize ==0.5.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
                     split ==0.2.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     unix ==2.7.*,
                     zlib ==0.5.*
@@ -194,16 +194,16 @@ Executable chapter10-init
   Main-Is:          Tutorial/Chapter10/GeneratePopulation.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    base ==4.*,
+  Build-Depends:    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
                     random ==1.1.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     zlib ==0.5.*
 
@@ -211,15 +211,15 @@ Executable chapter11
   Main-Is:          Tutorial/Chapter11/Example.hs
   GHC-Options:      -Wall
   Hs-source-dirs:   src
-  Build-Depends:    base ==4.*,
+  Build-Depends:    base >=4.8 && <5,
                     cereal ==0.4.*,
-                    creatur ==5.9.0,
+                    creatur ==5.9.4,
                     directory ==1.2.*,
-                    ghc-prim ==0.3.*,
+                    ghc-prim ==0.3.* || ==0.4.*,
                     MonadRandom ==0.3.*,
                     mtl ==2.2.*,
                     old-locale ==1.0.*,
-                    time ==1.4.*,
+                    time ==1.4.* || ==1.5.*,
                     transformers ==0.4.*,
                     zlib ==0.5.*
 

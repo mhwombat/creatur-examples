@@ -3,7 +3,6 @@
 import Prelude hiding (read)
 import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Reader, put, get,
   putRawWord8, getRawWord8, write, read)
-import Control.Applicative ((<$>), (<*>))
 import Data.Bits
 import Data.Word (Word8)
 import GHC.Generics (Generic)

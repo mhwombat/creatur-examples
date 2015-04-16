@@ -14,7 +14,6 @@ import ALife.Creatur.Genetics.Recombination (mutatePairedLists,
 import ALife.Creatur.Genetics.Reproduction.Sexual (Reproductive, Strand, 
   produceGamete, build, makeOffspring)
 import ALife.Creatur.Universe (SimpleUniverse, genName, writeToLog)
-import Control.Applicative ((<$>), (<*>), pure)
 import Control.Monad.IO.Class (liftIO)
 import Control.Monad.Random (evalRandIO)
 import Control.Monad.State (StateT)
