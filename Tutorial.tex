@@ -58,6 +58,8 @@ Even if you aren't using the Créatúr framework, you may find some of these
 modules useful.
 
 \chapter{Getting started}
+
+\section{Installing Créatúr and the examples}
 \label{sec:install}
 
 %% NOTE: Créatúr uses the |hmatix| package, which requires the ``dev'' versions of the 
@@ -90,6 +92,8 @@ This will create a directory called \path{creatur-examples-master}.
 \item Build and install the examples by typing |cabal install|.
 \end {enumerate}
 
+\section{Learning Haskell}
+
 If you've never used Haskell before, I recommend the following
 books.
 The complete content of both books is freely available online,
@@ -112,7 +116,6 @@ ISBN-13: 978-0596514983 \\
 \url{http://book.realworldhaskell.org/}
 \end {itemize}
 
-
 The Haskell community is very friendly and welcoming to newbies.
 Two good places to ask questions are 
 the beginners@haskell.org mailing list
@@ -122,6 +125,42 @@ and Stack Overflow \url{http://stackoverflow.com/questions/tagged/haskell}.
 
 The API documentation for Créatúr is available at 
 \url{http://hackage.haskell.org/package/creatur}.
+
+\section{IMPORTANT: GHC version dependencies}
+
+You may notice some differences between the snippets of
+source code presented in this tutorial
+and the actual source code for the examples.
+GHC version 7.10 introduced some important changes.
+For Créatúr users, this means that it is no longer necessary to import
+|Control.Applicative|.
+In order to make these examples work with both older and newer versions
+of GHC, I made some (temporary) changes to the examples.
+These changes are explained below.
+
+First, I temporarily added a CPP language pragma to allow conditional
+compilation.
+
+\begin{code}
+{-# LANGUAGE CPP #-}
+\end{code}
+
+You can remove that line if you're only working with GHC 7.10 
+or greater, but it will do no harm to leave it in.
+Finally, I added some code which imports |Control.Applicative|
+or not, depending on the GHC version used.
+
+\begin{code}
+#if MIN_VERSION_base(4,8,0)
+-- Starting with GHC 7.10 (base 4.8), we don't need to import
+-- Control.Applicative
+#else
+import Control.Applicative
+#endif
+\end{code} 
+
+You don't need those lines if you're only working with GHC 7.10 
+or greater, but it will do no harm to leave them in.
 
 \chapter{The main daemon loop}
 \label{sec:daemon}
@@ -191,8 +230,8 @@ Here is the listing of |creatur-examples.cabal|.
 \VerbatimInput{creatur-examples.cabal}
 
 \begin{enumerate}
-\item If you haven't already done so, follow the instructions in Chapter
-\ref{sec:install}.
+\item If you haven't already done so, follow the instructions in 
+Section \ref{sec:install}.
 \item Create the initial population by running |chapter5-init|.
 \item Start the daemon with the command |sudo chapter5-daemon start|.
 \item Stop the daemon with the command |sudo chapter5-daemon stop|.
@@ -394,8 +433,8 @@ used in artificial life and genetic programming
 \label{sec:run2}
 
 \begin{enumerate}
-\item If you haven't already done so, follow the instructions in Chapter 
-\ref{sec:install}.
+\item If you haven't already done so, follow the instructions in 
+Section \ref{sec:install}.
 \item Create the initial population by running |chapter7-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}
@@ -478,8 +517,8 @@ ability to reproduce sexually.
 \label{sec:run3}
 
 \begin{enumerate}
-\item If you haven't already done so, follow the instructions in Chapter 
-\ref{sec:install}.
+\item If you haven't already done so, follow the instructions in 
+Section \ref{sec:install}.
 \item Create the initial population by running |chapter8-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}
@@ -571,8 +610,8 @@ In this part of the tutorial, we generate a random initial population.
 \label{sec:run4}
 
 \begin{enumerate}
-\item If you haven't already done so, follow the instructions in Chapter 
-\ref{sec:install}.
+\item If you haven't already done so, follow the instructions in
+Section \ref{sec:install}.
 \item Create the initial population by running |chapter9-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}
@@ -623,8 +662,8 @@ where each species is a different Haskell type.
 \label{sec:run5}
 
 \begin{enumerate}
-\item If you haven't already done so, follow the instructions in Chapter 
-\ref{sec:install}.
+\item If you haven't already done so, follow the instructions in 
+Section \ref{sec:install}.
 \item Create the initial population by running |chapter10-init|.
 \item Start/stop/restart the daemon with the command
 \UndefineShortVerb{\|}

@@ -1,4 +1,5 @@
 {-# LANGUAGE DeriveGeneric, FlexibleContexts, TypeFamilies #-}
+{-# LANGUAGE CPP #-}
 module Tutorial.Chapter9.Bug (Bug(..), Sex(..), BugColour(..),
   buildBug, run) where
 
@@ -19,6 +20,13 @@ import Control.Monad.Random (evalRandIO)
 import Control.Monad.State (StateT)
 import Data.Serialize (Serialize)
 import GHC.Generics (Generic)
+
+#if MIN_VERSION_base(4,8,0)
+-- Starting with GHC 7.10 (base 4.8), we don't need to import
+-- Control.Applicative
+#else
+import Control.Applicative
+#endif
 
 data Bug = Bug
   { 

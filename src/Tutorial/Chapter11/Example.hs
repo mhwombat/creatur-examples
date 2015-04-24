@@ -1,11 +1,19 @@
 {-# LANGUAGE DeriveGeneric, FlexibleContexts, FlexibleInstances,
     TypeFamilies #-}
+{-# LANGUAGE CPP #-}
 import Prelude hiding (read)
 import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Reader, put, get,
   putRawWord8, getRawWord8, write, read)
 import Data.Bits
 import Data.Word (Word8)
 import GHC.Generics (Generic)
+
+#if MIN_VERSION_base(4,8,0)
+-- Starting with GHC 7.10 (base 4.8), we don't need to import
+-- Control.Applicative
+#else
+import Control.Applicative
+#endif
 
 --
 -- This example shows how the default implementation of Genetic is
