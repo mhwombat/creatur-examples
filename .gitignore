@@ -8,3 +8,5 @@ result
 
 # Backup files
 *~
+.envrc
+.textadept_session
