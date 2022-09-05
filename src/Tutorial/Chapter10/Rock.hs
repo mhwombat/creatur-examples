@@ -2,10 +2,10 @@
 
 module Tutorial.Chapter10.Rock (Rock(..)) where
 
-import ALife.Creatur (Agent, agentId, isAlive)
+import ALife.Creatur          (Agent, agentId, isAlive)
 import ALife.Creatur.Database (Record, key)
-import Data.Serialize (Serialize)
-import GHC.Generics (Generic)
+import Data.Serialize         (Serialize)
+import GHC.Generics           (Generic)
 
 data Rock = Rock String Int deriving (Show, Generic)
 

@@ -1,12 +1,11 @@
 module Main where
 
+import ALife.Creatur.Daemon       (CreaturDaemon (..), Job (..), launch,
+                                   simpleDaemon)
+import ALife.Creatur.Task         (doNothing, runInteractingAgents, simpleJob)
+import ALife.Creatur.Universe     (mkSimpleUniverse)
+import System.Directory           (canonicalizePath)
 import Tutorial.Chapter10.Martian (run)
-import ALife.Creatur.Daemon (CreaturDaemon(..), Job(..),
-  simpleDaemon, launch)
-import ALife.Creatur.Universe (mkSimpleUniverse)
-import ALife.Creatur.Task (simpleJob, runInteractingAgents,
-  doNothing)
-import System.Directory (canonicalizePath)
 
 main :: IO ()
 main = do

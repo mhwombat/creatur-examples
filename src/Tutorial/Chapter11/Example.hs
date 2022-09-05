@@ -1,12 +1,14 @@
-{-# LANGUAGE DeriveGeneric, FlexibleContexts, FlexibleInstances,
-    TypeFamilies #-}
-{-# LANGUAGE CPP #-}
-import Prelude hiding (read)
-import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Reader, put, get,
-  putRawWord8, getRawWord8, write, read)
+{-# LANGUAGE CPP               #-}
+{-# LANGUAGE DeriveGeneric     #-}
+{-# LANGUAGE FlexibleContexts  #-}
+{-# LANGUAGE FlexibleInstances #-}
+{-# LANGUAGE TypeFamilies      #-}
+import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Reader, get, getRawWord8, put,
+                                         putRawWord8, read, write)
 import Data.Bits
-import Data.Word (Word8)
-import GHC.Generics (Generic)
+import Data.Word                        (Word8)
+import GHC.Generics                     (Generic)
+import Prelude                          hiding (read)
 
 #if MIN_VERSION_base(4,8,0)
 -- Starting with GHC 7.10 (base 4.8), we don't need to import
@@ -18,7 +20,7 @@ import Control.Applicative
 --
 -- This example shows how the default implementation of Genetic is
 -- usually sufficient, even for a complex data structure.
--- 
+--
 data Colour = Green | Purple
   deriving (Show, Eq, Enum, Bounded, Generic)
 instance Genetic Colour
@@ -55,7 +57,7 @@ instance Genetic CustomGene where
 -- In this example, we store three boolean values in a Word8 value
 -- to reduce the amount of storage required.
 --
-      
+
 data CustomGene2 = H Bool Bool Bool
   deriving (Show, Eq, Generic)
 

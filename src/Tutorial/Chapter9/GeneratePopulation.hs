@@ -1,10 +1,9 @@
-import Tutorial.Chapter9.Bug (Bug, buildBug)
-import ALife.Creatur.Universe (store, mkSimpleUniverse)
-import ALife.Creatur.Genetics.BRGCBool (DiploidReader,
-  runDiploidReader)
-import Control.Monad.State.Lazy (evalStateT)
-import Data.Either (rights)
-import System.Random (randoms, getStdGen, newStdGen)
+import ALife.Creatur.Genetics.BRGCBool (DiploidReader, runDiploidReader)
+import ALife.Creatur.Universe          (mkSimpleUniverse, store)
+import Control.Monad.State.Lazy        (evalStateT)
+import Data.Either                     (rights)
+import System.Random                   (getStdGen, newStdGen, randoms)
+import Tutorial.Chapter9.Bug           (Bug, buildBug)
 
 buildBugs :: [String] -> DiploidReader [Bug]
 buildBugs names = do

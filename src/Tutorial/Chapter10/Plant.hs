@@ -1,28 +1,41 @@
-{-# LANGUAGE DeriveGeneric, FlexibleContexts, TypeFamilies #-}
+{-# LANGUAGE DeriveGeneric    #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE TypeFamilies     #-}
 module Tutorial.Chapter10.Plant (Plant(..), FlowerColour(..),
   buildPlant, tryMating) where
 
-import ALife.Creatur (Agent, agentId, isAlive)
-import ALife.Creatur.Database (Record, key)
-import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Reader, Sequence,
-  getWithDefault, runReader, copy, consumed)
-import ALife.Creatur.Genetics.Recombination (mutatePairedLists, 
-  randomCrossover, randomCutAndSplice, randomOneOfPair, withProbability)
-import ALife.Creatur.Genetics.Reproduction.SimplifiedSexual
-  (Reproductive, Strand, recombine, build, makeOffspring)
-import ALife.Creatur.Universe (SimpleUniverse, genName, writeToLog)
-import Control.Monad.IO.Class (liftIO)
-import Control.Monad.Random (evalRandIO)
-import Control.Monad.State (StateT)
-import Data.Serialize (Serialize)
-import GHC.Generics (Generic)
+import ALife.Creatur                                        (Agent, agentId,
+                                                             isAlive)
+import ALife.Creatur.Database                               (Record, key)
+import ALife.Creatur.Genetics.BRGCWord8                     (Genetic, Reader,
+                                                             Sequence, consumed,
+                                                             copy,
+                                                             getWithDefault,
+                                                             runReader)
+import ALife.Creatur.Genetics.Recombination                 (mutatePairedLists,
+                                                             randomCrossover,
+                                                             randomCutAndSplice,
+                                                             randomOneOfPair,
+                                                             withProbability)
+import ALife.Creatur.Genetics.Reproduction.SimplifiedSexual (Reproductive,
+                                                             Strand, build,
+                                                             makeOffspring,
+                                                             recombine)
+import ALife.Creatur.Universe                               (SimpleUniverse,
+                                                             genName,
+                                                             writeToLog)
+import Control.Monad.IO.Class                               (liftIO)
+import Control.Monad.Random                                 (evalRandIO)
+import Control.Monad.State                                  (StateT)
+import Data.Serialize                                       (Serialize)
+import GHC.Generics                                         (Generic)
 
 data Plant = Plant
-  { 
-    plantName :: String,
+  {
+    plantName         :: String,
     plantFlowerColour :: FlowerColour,
-    plantEnergy :: Int,
-    plantGenome :: Sequence
+    plantEnergy       :: Int,
+    plantGenome       :: Sequence
   } deriving (Show, Generic)
 
 instance Serialize Plant
@@ -46,22 +59,22 @@ buildPlant truncateGenome name = do
 
 instance Reproductive Plant where
   type Strand Plant = Sequence
-  recombine a b = 
+  recombine a b =
     withProbability 0.1 randomCrossover (plantGenome a, plantGenome b) >>=
     withProbability 0.01 randomCutAndSplice >>=
     withProbability 0.001 mutatePairedLists >>=
     randomOneOfPair
-  build name = runReader (buildPlant False name)
+  build name s = fst $ runReader (buildPlant False name) s
 
-tryMating 
-  :: (Agent a, Serialize a) 
+tryMating
+  :: (Agent a, Serialize a)
     => [Plant] -> StateT (SimpleUniverse a) IO [Plant]
 tryMating (me:other:_) = do
   name <- genName
   (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)
-  writeToLog $ 
+  writeToLog $
     plantName me ++ " and " ++ plantName other ++
-      " gave birth to " ++ name ++ ", with " ++ 
+      " gave birth to " ++ name ++ ", with " ++
        show (plantFlowerColour baby) ++ " flowers"
   writeToLog $ "Me: " ++ show me
   writeToLog $ "Mate: " ++ show other

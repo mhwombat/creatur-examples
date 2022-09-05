@@ -1,8 +1,7 @@
-import Tutorial.Chapter8.Bug (Sex(..), BugColour(..), buildBug)
-import ALife.Creatur.Universe (store, mkSimpleUniverse)
-import ALife.Creatur.Genetics.BRGCBool (put, runWriter,
-  runDiploidReader)
-import Control.Monad.State.Lazy (evalStateT)
+import ALife.Creatur.Genetics.BRGCBool (put, runDiploidReader, runWriter)
+import ALife.Creatur.Universe          (mkSimpleUniverse, store)
+import Control.Monad.State.Lazy        (evalStateT)
+import Tutorial.Chapter8.Bug           (BugColour (..), Sex (..), buildBug)
 
 main :: IO ()
 main = do
@@ -13,7 +12,7 @@ main = do
   let (Right b1) = runDiploidReader (buildBug "Bugsy") (g1,g1)
   evalStateT (store b1) u
 
-  let g2 = runWriter (put Male >> put Purple) 
+  let g2 = runWriter (put Male >> put Purple)
   let (Right b2) = runDiploidReader (buildBug "Mel") (g2,g2)
   evalStateT (store b2) u
 

@@ -1,24 +1,23 @@
-import Tutorial.Chapter10.Rock (Rock(..))
-import Tutorial.Chapter10.Plant (buildPlant)
-import Tutorial.Chapter10.Bug (buildBug)
-import Tutorial.Chapter10.Martian (Martian(..))
-import ALife.Creatur.Genetics.BRGCWord8 (Reader, DiploidReader, 
-  runReader, runDiploidReader)
-import ALife.Creatur.Universe (store, mkSimpleUniverse)
-import Data.Either (rights)
-import Control.Monad.State.Lazy (evalStateT)
-import System.Random (getStdGen, newStdGen, randoms)
+import ALife.Creatur.Genetics.BRGCWord8 (DiploidReader, Reader,
+                                         runDiploidReader, runReader)
+import ALife.Creatur.Universe           (mkSimpleUniverse, store)
+import Control.Monad.State.Lazy         (evalStateT)
+import Data.Either                      (rights)
+import System.Random                    (getStdGen, newStdGen, randoms)
+import Tutorial.Chapter10.Bug           (buildBug)
+import Tutorial.Chapter10.Martian       (Martian (..))
+import Tutorial.Chapter10.Plant         (buildPlant)
+import Tutorial.Chapter10.Rock          (Rock (..))
 
-buildPlants :: [String] -> Reader [Martian]
+buildPlants :: [String] -> Reader (Either [String] [Martian])
 buildPlants names = do
   xs <- mapM (buildPlant True) names
-  return . map FromPlant . rights $ xs
+  return . sequence $ map (fmap FromPlant) xs
 
 buildBugs :: [String] -> DiploidReader [Martian]
 buildBugs names = do
   xs <- mapM (buildBug True) names
   return . map FromBug . rights $ xs
-
 
 main :: IO ()
 main = do
@@ -37,7 +36,7 @@ main = do
   r <- newStdGen -- source of random genes
   let g = randoms r
 
-  let plants = runReader (buildPlants plantNames) g
+  let (Right plants) = fst $ runReader (buildPlants plantNames) g
   mapM_ (\b -> evalStateT (store b) u) plants
 
   -- Note: The next part "hangs" for me. It didn't used to. And the
@@ -55,4 +54,3 @@ main = do
 
   let agents = runDiploidReader (buildBugs names) (g1, g2)
   mapM_ (\b -> evalStateT (store b) u) agents
-

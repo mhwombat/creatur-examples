@@ -1,25 +1,33 @@
-{-# LANGUAGE DeriveGeneric, FlexibleContexts, TypeFamilies #-}
-{-# LANGUAGE CPP #-}
-module Tutorial.Chapter10.Bug (Bug(..), Sex(..), BugColour(..), 
+{-# LANGUAGE CPP              #-}
+{-# LANGUAGE DeriveGeneric    #-}
+{-# LANGUAGE FlexibleContexts #-}
+{-# LANGUAGE TypeFamilies     #-}
+module Tutorial.Chapter10.Bug (Bug(..), Sex(..), BugColour(..),
   buildBug, tryMating) where
 
-import ALife.Creatur (Agent, agentId, isAlive)
-import ALife.Creatur.Database (Record, key)
-import ALife.Creatur.Genetics.BRGCWord8 (Genetic, Sequence,
-  DiploidSequence, DiploidReader, getAndExpress, runDiploidReader,
-  copy2, consumed2)
-import ALife.Creatur.Genetics.Diploid (Diploid)
-import ALife.Creatur.Genetics.Recombination (mutatePairedLists, 
-  randomCrossover, randomCutAndSplice, randomOneOfPair, 
-  repeatWithProbability, withProbability)
-import ALife.Creatur.Genetics.Reproduction.Sexual (Reproductive, Strand, 
-  produceGamete, build, makeOffspring)
-import ALife.Creatur.Universe (SimpleUniverse, genName, writeToLog)
-import Control.Monad.IO.Class (liftIO)
-import Control.Monad.Random (evalRandIO)
-import Control.Monad.State (StateT)
-import Data.Serialize (Serialize)
-import GHC.Generics (Generic)
+import ALife.Creatur                              (Agent, agentId, isAlive)
+import ALife.Creatur.Database                     (Record, key)
+import ALife.Creatur.Genetics.BRGCWord8           (DiploidReader,
+                                                   DiploidSequence, Genetic,
+                                                   Sequence, consumed2, copy2,
+                                                   getAndExpress,
+                                                   runDiploidReader)
+import ALife.Creatur.Genetics.Diploid             (Diploid)
+import ALife.Creatur.Genetics.Recombination       (mutatePairedLists,
+                                                   randomCrossover,
+                                                   randomCutAndSplice,
+                                                   randomOneOfPair,
+                                                   repeatWithProbability,
+                                                   withProbability)
+import ALife.Creatur.Genetics.Reproduction.Sexual (Reproductive, Strand, build,
+                                                   makeOffspring, produceGamete)
+import ALife.Creatur.Universe                     (SimpleUniverse, genName,
+                                                   writeToLog)
+import Control.Monad.IO.Class                     (liftIO)
+import Control.Monad.Random                       (evalRandIO)
+import Control.Monad.State                        (StateT)
+import Data.Serialize                             (Serialize)
+import GHC.Generics                               (Generic)
 
 #if MIN_VERSION_base(4,8,0)
 -- Starting with GHC 7.10 (base 4.8), we don't need to import
@@ -29,11 +37,11 @@ import Control.Applicative
 #endif
 
 data Bug = Bug
-  { 
-    bugName :: String,
+  {
+    bugName   :: String,
     bugColour :: BugColour,
-    bugSpots :: [BugColour],
-    bugSex :: Sex,
+    bugSpots  :: [BugColour],
+    bugSex    :: Sex,
     bugEnergy :: Int,
     bugGenome :: DiploidSequence
   } deriving (Show, Generic)
@@ -68,15 +76,15 @@ buildBug truncateGenome name = do
 
 instance Reproductive Bug where
   type Strand Bug = Sequence
-  produceGamete a = 
+  produceGamete a =
     repeatWithProbability 0.1 randomCrossover (bugGenome a) >>=
     withProbability 0.01 randomCutAndSplice >>=
     withProbability 0.001 mutatePairedLists >>=
     randomOneOfPair
   build name = runDiploidReader (buildBug False name)
 
-tryMating 
-  :: (Agent a, Serialize a) 
+tryMating
+  :: (Agent a, Serialize a)
     => [Bug] -> StateT (SimpleUniverse a) IO [Bug]
 tryMating (me:other:_) = do
   writeToLog $ bugName me ++ ", a " ++ show (bugSex me) ++ " bug, sees "
@@ -85,9 +93,9 @@ tryMating (me:other:_) = do
     then do
       name <- genName
       (Right baby) <- liftIO $ evalRandIO (makeOffspring me other name)
-      writeToLog $ 
+      writeToLog $
         bugName me ++ " and " ++ bugName other ++
-          " gave birth to " ++ name ++ ", a " ++ 
+          " gave birth to " ++ name ++ ", a " ++
           show (bugColour baby) ++ " " ++ show (bugSex baby) ++ " bug"
       writeToLog $ "Mother: " ++ show me
       writeToLog $ "Father: " ++ show other

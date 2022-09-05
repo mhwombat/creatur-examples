@@ -1,12 +1,12 @@
 {-# LANGUAGE TypeFamilies #-}
-import Tutorial.Chapter9.Bug (Bug(..), Sex(..), BugColour(..))
-import ALife.Creatur.Database as D (Database, DBRecord)
-import ALife.Creatur.Universe (Universe, agentIds,
-  addAgent, mkSimpleUniverse, getAgent)
-import ALife.Creatur.Clock (currentTime)
-import Control.Monad.State (StateT, evalStateT)
+import ALife.Creatur.Clock    (currentTime)
+import ALife.Creatur.Database as D (DBRecord, Database)
+import ALife.Creatur.Universe (Universe, addAgent, agentIds, getAgent,
+                               mkSimpleUniverse)
 import Control.Monad.IO.Class (liftIO)
-import System.Environment (getArgs)
+import Control.Monad.State    (StateT, evalStateT)
+import System.Environment     (getArgs)
+import Tutorial.Chapter9.Bug  (Bug (..), BugColour (..), Sex (..))
 
 getAndExamineAll
   :: (Database d, DBRecord d ~ Bug)
@@ -14,7 +14,7 @@ getAndExamineAll
 getAndExamineAll = do
   names <- agentIds
   mapM_ getAndExamine names
-  
+
 getAndExamine
   :: (Database d, DBRecord d ~ Bug)
     => String -> StateT (Universe c l d n x Bug) IO ()
@@ -22,8 +22,8 @@ getAndExamine name = do
   a <- getAgent name
   case a of
     (Right agent) -> liftIO $ examine agent
-    (Left msg)    -> liftIO $ putStrLn msg 
-  
+    (Left msg)    -> liftIO $ putStrLn msg
+
 examine :: Bug -> IO ()
 examine a = do
   putStrLn $ bugName a ++ " is a " ++ show (bugSex a) ++ " "
@@ -31,10 +31,10 @@ examine a = do
   putStrLn $ "Energy=" ++ show (bugEnergy a)
   putStrLn $ "Genome=" ++ show (bugGenome a)
   putStrLn ""
-  
+
 describeSpots :: [BugColour] -> String
-describeSpots [] = "no spots"
-describeSpots [a] = show a ++ " spots"
+describeSpots []     = "no spots"
+describeSpots [a]    = show a ++ " spots"
 describeSpots (a:bs) = show a ++ " and " ++ describeSpots bs
 
 main :: IO ()

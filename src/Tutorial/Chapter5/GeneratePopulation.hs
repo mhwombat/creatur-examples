@@ -1,6 +1,6 @@
-import Tutorial.Chapter5.Rock (Rock(..))
-import ALife.Creatur.Universe (store, mkSimpleUniverse)
+import ALife.Creatur.Universe   (mkSimpleUniverse, store)
 import Control.Monad.State.Lazy (evalStateT)
+import Tutorial.Chapter5.Rock   (Rock (..))
 
 main :: IO ()
 main = do

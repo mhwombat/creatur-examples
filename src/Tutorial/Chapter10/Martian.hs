@@ -1,17 +1,17 @@
 {-# LANGUAGE DeriveGeneric #-}
 module Tutorial.Chapter10.Martian (Martian(..), run) where
 
-import Tutorial.Chapter10.Rock (Rock)
+import ALife.Creatur            (Agent, agentId, isAlive)
+import ALife.Creatur.Database   (Record, key)
+import ALife.Creatur.Universe   (SimpleUniverse, writeToLog)
+import Control.Monad.State      (StateT)
+import Data.Serialize           (Serialize)
+import GHC.Generics             (Generic)
+import Tutorial.Chapter10.Bug   (Bug)
+import qualified Tutorial.Chapter10.Bug as B (tryMating)
 import Tutorial.Chapter10.Plant (Plant)
 import qualified Tutorial.Chapter10.Plant as P (tryMating)
-import Tutorial.Chapter10.Bug (Bug)
-import qualified Tutorial.Chapter10.Bug as B (tryMating)
-import ALife.Creatur (Agent, agentId, isAlive)
-import ALife.Creatur.Database (Record, key)
-import ALife.Creatur.Universe (SimpleUniverse, writeToLog)
-import Control.Monad.State (StateT)
-import Data.Serialize (Serialize)
-import GHC.Generics (Generic)
+import Tutorial.Chapter10.Rock  (Rock)
 
 data Martian = FromRock Rock | FromPlant Plant | FromBug Bug
   deriving (Show, Generic)
@@ -19,12 +19,12 @@ data Martian = FromRock Rock | FromPlant Plant | FromBug Bug
 instance Serialize Martian
 
 instance Agent Martian where
-  agentId (FromRock x) = agentId x
+  agentId (FromRock x)  = agentId x
   agentId (FromPlant x) = agentId x
-  agentId (FromBug x) = agentId x
-  isAlive (FromRock x) = isAlive x
+  agentId (FromBug x)   = agentId x
+  isAlive (FromRock x)  = isAlive x
   isAlive (FromPlant x) = isAlive x
-  isAlive (FromBug x) = isAlive x
+  isAlive (FromBug x)   = isAlive x
 
 instance Record Martian where
   key = agentId

@@ -1,7 +1,7 @@
-import Tutorial.Chapter7.Plant (FlowerColour(..), buildPlant)
-import ALife.Creatur.Universe (store, mkSimpleUniverse)
-import ALife.Creatur.Genetics.BRGCBool (write, runReader)
-import Control.Monad.State.Lazy (evalStateT)
+import ALife.Creatur.Genetics.BRGCBool (runReader, write)
+import ALife.Creatur.Universe          (mkSimpleUniverse, store)
+import Control.Monad.State.Lazy        (evalStateT)
+import Tutorial.Chapter7.Plant         (FlowerColour (..), buildPlant)
 
 main :: IO ()
 main = do
